@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id'application'
+    id'com.github.johnrengelman.shadow' version '4.0.4'
+}
+
+group 'com.github.huebama-ting'
+version '0.1'
+def jdaVersion = '4.0.0_39'
+mainClassName = 'com.github.huebama_ting.segfault_chan.Bot'
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "net.dv8tion:JDA:$jdaVersion"
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
+}
+
+compileJava.options.encoding = 'UTF-8'
