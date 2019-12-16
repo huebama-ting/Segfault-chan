@@ -43,8 +43,8 @@ public class ServantQuery {
         return servantList;
     }
 
-    public String getServantInfo(String input) {
-        return getServantByID(input).get(0).toString();
+    public Servant getServantInfo(String input) {
+        return getServantByID(input).get(0);
 
     }
 }

@@ -1,6 +1,6 @@
 package com.github.huebama_ting.segfault_chan;
 
-public class Servant {
+public class Servant extends DBEntry {
 
     private short idn;
     private String name;
@@ -38,13 +38,71 @@ public class Servant {
         this.img = img;
     }
 
-    @Override
-    public String toString() {
-        return "**ID: **" + idn + "\n**Name: **" + name;
+    public short getIdn() {
+        return idn;
     }
 
-    /*public String[] getServantInfo() {
-        return new String[] {Short.toString(idn), name, servClass, Integer.toString(hp), Short.toString(atk), traits,
-                illust, cv, align, htWt, gender, nick, attrib, rarity, img};
-    }*/
+    public String getName() {
+        return name;
+    }
+
+    public String getServClass() {
+        return servClass;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public short getAtk() {
+        return atk;
+    }
+
+    public String getTraits() {
+        return traits;
+    }
+
+    public String getIllust() {
+        return illust;
+    }
+
+    public String getCv() {
+        return cv;
+    }
+
+    public String getAlign() {
+        return align;
+    }
+
+    public String getHtWt() {
+        return htWt;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+
+    public String getAttrib() {
+        return attrib;
+    }
+
+    public String getRarity() {
+        return rarity;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    @Override
+    public String toString() {
+        return "**ID: **" + idn + "\n**Name: **" + name + "\n**Class: **" + servClass + "\n**Rarity: **" + rarity +
+                "\n**Max HP: **" + hp + "\n**Max ATK: **" + atk + "\n**Traits: **" + traits + "\n**Illustrator: **" +
+                illust +  "\n**CV: **" + cv + "\n" + "**Alignment: **" + align + "\n**Height / Weight: **" + htWt +
+                "\n**Gender: **" + gender + "\n**Nicknames: **" + nick + "\n**Attribute: **" + attrib;
+    }
 }
