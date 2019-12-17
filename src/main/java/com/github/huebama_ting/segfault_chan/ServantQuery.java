@@ -13,12 +13,12 @@ public class ServantQuery {
         conn = new DBConnection("bot", "*J4#P&o0IZdE", "localhost", "3306", "fgo", "servants");
     }
 
-    public ArrayList<Servant> getServantByID(String idn) {
+    public ArrayList<Servant> getServant(String search) {
         ArrayList<Servant> servantList = null;
-        String query = "SELECT * FROM " + conn.getTable() + " WHERE id = " + idn;
+        String query = determineQueryType(search);
 
         try (Statement stmt = conn.getConn().createStatement()) {
-            servantList = processIDQuery(stmt, query);
+            servantList = processQuery(stmt, query);
         } catch (SQLException exception) {
             conn.printSQLException(exception);
         }
@@ -26,7 +26,7 @@ public class ServantQuery {
         return servantList;
     }
 
-    private ArrayList<Servant> processIDQuery(Statement stmt, String query) throws SQLException {
+    private ArrayList<Servant> processQuery(Statement stmt, String query) throws SQLException {
         ResultSet rs =  stmt.executeQuery(query);
         ArrayList<Servant> servantList = new ArrayList<>();
 
@@ -44,7 +44,39 @@ public class ServantQuery {
     }
 
     public Servant getServantInfo(String input) {
-        return getServantByID(input).get(0);
+        if (input.matches("^[0-9]*")) {
+            return getServantInfoID(input);
+        }
 
+        return getServantInfoName(input);
+    }
+
+    private Servant getServantInfoID(String input) {
+        ArrayList<Servant> resultList = getServant(input);
+
+        if (resultList.size() == 0) {
+            return null;
+        }
+
+        return resultList.get(0);
+    }
+
+    private Servant getServantInfoName(String input) {
+        ArrayList<Servant> resultList = getServant(input);
+
+        if (resultList.size() == 0) {
+            return null;
+        }
+
+        return resultList.get(0);
+    }
+
+    private String determineQueryType(String search) {
+        if (search.matches("^[0-9]*")) {
+            return "SELECT * FROM " + conn.getTable() + " WHERE id = " + search;
+        }
+
+        return "SELECT * FROM " + conn.getTable() +  " WHERE name = '" + search + "' OR name LIKE '%" + search +
+               "%' OR nick " + "LIKE '%" + search + "%'";
     }
 }
