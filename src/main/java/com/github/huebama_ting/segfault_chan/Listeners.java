@@ -7,6 +7,7 @@ public class Listeners extends ListenerAdapter {
 
     private ServantQuery servantQuery;
     private MessageCreator msgCreator;
+    private static final short SERV_NUM = 271;
 
     public Listeners() {
         servantQuery = new ServantQuery();
@@ -22,7 +23,7 @@ public class Listeners extends ListenerAdapter {
         String[] messageContent = event.getMessage().getContentRaw().split(" ");
 
         if (messageContent[0].equals("!servant")) {
-            if (Short.parseShort(messageContent[1]) > 271) {
+            if (Short.parseShort(messageContent[1]) > SERV_NUM) {
                 msgCreator.createMessage("Servant not found!");
                 event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
 

@@ -26,7 +26,6 @@ public class DBConnection {
         try {
             conn = getConnection();
         } catch (SQLException exception) {
-            exception.printStackTrace();
             printSQLException(exception);
         }
     }
@@ -44,6 +43,8 @@ public class DBConnection {
     }
 
     public void printSQLException(SQLException ex) {
+        ex.printStackTrace();
+
         while (ex != null) {
             Throwable t = ex.getCause();
 
