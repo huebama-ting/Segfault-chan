@@ -2,11 +2,12 @@ package com.github.huebama_ting.segfault_chan;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.ArrayList;
+
 public class MessageCentre {
     
     private ServantQuery servantQuery;
     private MessageCreator msgCreator;
-    private static final short SERV_NUM = 271;
     
     public MessageCentre() {
         servantQuery = new ServantQuery();
@@ -26,16 +27,27 @@ public class MessageCentre {
     }
     
     private void servantLookup(MessageReceivedEvent event, String message) {
-        Servant result = servantQuery.getServantInfo(message);
+        ArrayList<Servant> result = servantQuery.getServantInfo(message);
 
-        if (result == null) {
+        if (result.size() == 0) {
             msgCreator.createMessage("Servant not found!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
+        } else if (result.size() == 1) {
+            msgCreator.createEmbed(result.get(0));
+            event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
+        } else {
+            msgCreator.createMessage("Multiple results found: \n\n" + getMatches(result));
+            event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
+        }
+    }
 
-            return;
+    private String getMatches(ArrayList<Servant> result) {
+        StringBuilder out = new StringBuilder();
+
+        for (Servant s : result) {
+            out.append(s.getName()).append("\n");
         }
 
-        msgCreator.createEmbed(result);
-        event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
+        return out.toString();
     }
 }

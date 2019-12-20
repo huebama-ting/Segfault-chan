@@ -1,5 +1,7 @@
 package com.github.huebama_ting.segfault_chan;
 
+import java.util.ArrayList;
+
 public class Servant extends DBEntry {
 
     private short idn;

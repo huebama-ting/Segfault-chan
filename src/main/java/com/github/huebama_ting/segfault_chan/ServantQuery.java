@@ -43,32 +43,8 @@ public class ServantQuery {
         return servantList;
     }
 
-    public Servant getServantInfo(String input) {
-        if (input.matches("^[0-9]*")) {
-            return getServantInfoID(input);
-        }
-
-        return getServantInfoName(input);
-    }
-
-    private Servant getServantInfoID(String input) {
-        ArrayList<Servant> resultList = getServant(input);
-
-        if (resultList.size() == 0) {
-            return null;
-        }
-
-        return resultList.get(0);
-    }
-
-    private Servant getServantInfoName(String input) {
-        ArrayList<Servant> resultList = getServant(input);
-
-        if (resultList.size() == 0) {
-            return null;
-        }
-
-        return resultList.get(0);
+    public ArrayList<Servant> getServantInfo(String input) {
+        return getServant(input);
     }
 
     private String determineQueryType(String search) {
