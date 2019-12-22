@@ -36,6 +36,8 @@ public class MessageCreator {
 
         if (entry instanceof Servant) {
             setupServant((Servant) entry);
+        } else {
+            setupCE((CraftEssence) entry);
         }
     }
 
@@ -45,5 +47,13 @@ public class MessageCreator {
         ebdBuilder.setTitle(servant.getEnName());
         ebdBuilder.setDescription(servant.getJpName());
         ebdBuilder.addField("", servant.toString(), false);
+    }
+
+    private void setupCE(CraftEssence ce) {
+        ebdBuilder.setThumbnail(ce.getImg());
+        ebdBuilder.setColor(32768);
+        ebdBuilder.setTitle(ce.getEnName());
+        ebdBuilder.setDescription(ce.getJpName());
+        ebdBuilder.addField("", ce.toString(), false);
     }
 }

@@ -25,6 +25,10 @@ public abstract class Query {
         return resultList;
     }
 
+    public ArrayList<DBEntry> getEntryInfo(String input) {
+        return getEntry(input);
+    }
+
     protected DBConnection getConn() {
         return conn;
     }

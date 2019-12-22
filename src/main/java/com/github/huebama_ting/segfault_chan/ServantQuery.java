@@ -33,10 +33,6 @@ public class ServantQuery extends Query {
         return servantList;
     }
 
-    public ArrayList<DBEntry> getServantInfo(String input) {
-        return getEntry(input);
-    }
-
     @Override
     protected String determineQueryType(String search) {
         if (search.matches("^[0-9]*")) {
