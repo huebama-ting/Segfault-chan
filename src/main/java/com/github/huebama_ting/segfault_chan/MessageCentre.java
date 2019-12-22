@@ -27,7 +27,7 @@ public class MessageCentre {
     }
     
     private void servantLookup(MessageReceivedEvent event, String message) {
-        ArrayList<Servant> result = servantQuery.getServantInfo(message);
+        ArrayList<DBEntry> result = servantQuery.getServantInfo(message);
 
         if (result.size() == 0) {
             msgCreator.createMessage("Servant not found!");
@@ -41,11 +41,15 @@ public class MessageCentre {
         }
     }
 
-    private String getMatches(ArrayList<Servant> result) {
+    private String getMatches(ArrayList<DBEntry> result) {
         StringBuilder out = new StringBuilder();
+        Servant s;
 
-        for (Servant s : result) {
-            out.append(s.getEnName()).append("\n");
+        for (DBEntry d : result) {
+            if (d instanceof Servant) {
+                s = (Servant) d;
+                out.append(s.getEnName()).append("\n");
+            }
         }
 
         return out.toString();

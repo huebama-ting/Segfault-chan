@@ -5,30 +5,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class ServantQuery {
+public class ServantQuery extends Query {
 
     private DBConnection conn;
 
     public ServantQuery() {
-        conn = new DBConnection("bot", "*J4#P&o0IZdE", "localhost", "3306", "fgo", "servants");
+        super("fgo", "servants");
+        conn = getConn();
     }
 
-    public ArrayList<Servant> getServant(String search) {
-        ArrayList<Servant> servantList = null;
-        String query = determineQueryType(search);
-
-        try (Statement stmt = conn.getConn().createStatement()) {
-            servantList = processQuery(stmt, query);
-        } catch (SQLException exception) {
-            conn.printSQLException(exception);
-        }
-
-        return servantList;
-    }
-
-    private ArrayList<Servant> processQuery(Statement stmt, String query) throws SQLException {
+    @Override
+    protected ArrayList<DBEntry> processQuery(Statement stmt, String query) throws SQLException {
         ResultSet rs =  stmt.executeQuery(query);
-        ArrayList<Servant> servantList = new ArrayList<>();
+        ArrayList<DBEntry> servantList = new ArrayList<>();
 
         while (rs.next()) {
             Servant serv = new Servant(rs.getShort("id"), rs.getString("name_en"), rs.getString("name_jp"),
@@ -44,11 +33,12 @@ public class ServantQuery {
         return servantList;
     }
 
-    public ArrayList<Servant> getServantInfo(String input) {
-        return getServant(input);
+    public ArrayList<DBEntry> getServantInfo(String input) {
+        return getEntry(input);
     }
 
-    private String determineQueryType(String search) {
+    @Override
+    protected String determineQueryType(String search) {
         if (search.matches("^[0-9]*")) {
             return "SELECT * FROM " + conn.getTable() + " WHERE id = " + search;
         }
