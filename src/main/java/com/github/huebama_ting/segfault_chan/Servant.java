@@ -1,11 +1,10 @@
 package com.github.huebama_ting.segfault_chan;
 
-import java.util.ArrayList;
-
 public class Servant extends DBEntry {
 
     private short idn;
-    private String name;
+    private String enName;
+    private String jpName;
     private String servClass;
     private int hp;
     private short atk;
@@ -20,11 +19,12 @@ public class Servant extends DBEntry {
     private String rarity;
     private String img;
 
-    public Servant(short idn, String name, String servClass, int hp, short atk, String traits, String illust,
-                   String cv, String align, String htWt, String gender, String nick, String attrib, String rarity,
-                   String img) {
+    public Servant(short idn, String enName, String jpName, String servClass, int hp, short atk, String traits,
+                   String illust, String cv, String align, String htWt, String gender, String nick, String attrib,
+                   String rarity, String img) {
         this.idn = idn;
-        this.name = name;
+        this.enName = enName;
+        this.jpName = jpName;
         this.servClass = servClass;
         this.hp = hp;
         this.atk = atk;
@@ -44,8 +44,12 @@ public class Servant extends DBEntry {
         return idn;
     }
 
-    public String getName() {
-        return name;
+    public String getEnName() {
+        return enName;
+    }
+
+    public String getJpName() {
+        return jpName;
     }
 
     public String getServClass() {
@@ -102,9 +106,9 @@ public class Servant extends DBEntry {
 
     @Override
     public String toString() {
-        return "**ID: **" + idn + "\n**Name: **" + name + "\n**Class: **" + servClass + "\n**Rarity: **" + rarity +
-                "\n**Max HP: **" + hp + "\n**Max ATK: **" + atk + "\n**Traits: **" + traits + "\n**Illustrator: **" +
-                illust +  "\n**CV: **" + cv + "\n" + "**Alignment: **" + align + "\n**Height / Weight: **" + htWt +
-                "\n**Gender: **" + gender + "\n**Nicknames: **" + nick + "\n**Attribute: **" + attrib;
+        return "**ID: **" + idn + "\n**Class: **" + servClass + "\n**Rarity: **" + rarity + "\n**Max HP: **" + hp +
+                "\n**Max ATK: **" + atk + "\n**Traits: **" + traits + "\n**Illustrator: **" + illust +  "\n**CV: **" +
+                cv + "\n" + "**Alignment: **" + align + "\n**Height / Weight: **" + htWt + "\n**Gender: **" + gender +
+                "\n**Nicknames: **" + nick + "\n**Attribute: **" + attrib;
     }
 }

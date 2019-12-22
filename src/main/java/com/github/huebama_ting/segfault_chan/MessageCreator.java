@@ -42,8 +42,8 @@ public class MessageCreator {
     private void setupServant(Servant servant) {
         ebdBuilder.setThumbnail(servant.getImg());
         ebdBuilder.setColor(65535);
-        ebdBuilder.setTitle(servant.getName());
-        ebdBuilder.setDescription("Fate/Grand Order");
+        ebdBuilder.setTitle(servant.getEnName());
+        ebdBuilder.setDescription(servant.getJpName());
         ebdBuilder.addField("", servant.toString(), false);
     }
 }

@@ -45,7 +45,7 @@ public class MessageCentre {
         StringBuilder out = new StringBuilder();
 
         for (Servant s : result) {
-            out.append(s.getName()).append("\n");
+            out.append(s.getEnName()).append("\n");
         }
 
         return out.toString();
