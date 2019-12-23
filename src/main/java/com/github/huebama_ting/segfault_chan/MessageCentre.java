@@ -8,11 +8,13 @@ public class MessageCentre {
     
     private ServantQuery servantQuery;
     private CraftEssenceQuery ceQuery;
+    private FGOGacha fgoGacha;
     private MessageCreator msgCreator;
     
     public MessageCentre() {
         servantQuery = new ServantQuery();
         ceQuery = new CraftEssenceQuery();
+        fgoGacha = new FGOGacha(servantQuery, ceQuery);
         msgCreator = new MessageCreator();
     }
     
@@ -27,7 +29,16 @@ public class MessageCentre {
             servantLookup(event, message[1]);
         } else if (message[0].equals("!craftessence") || message[0].equals("!ce")) {
             ceLookup(event, message[1]);
+        } else if (message[0].equals("!yolo")) {
+            yoloRoll(event);
         }
+    }
+
+    private void yoloRoll(MessageReceivedEvent event) {
+        DBEntry result = fgoGacha.highTierGacha();
+
+        msgCreator.createEmbed(result);
+        event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
     }
     
     private void servantLookup(MessageReceivedEvent event, String message) {

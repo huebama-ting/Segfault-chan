@@ -31,15 +31,7 @@ public class CraftEssenceQuery extends Query {
     }
 
     @Override
-    protected String determineQueryType(String search) {
-        if (search.matches("^[0-9]*")) {
-            return "SELECT * FROM " + conn.getTable() + " WHERE id = " + search;
-        }
-
-        System.out.println("SELECT * FROM " + conn.getTable() +  " WHERE name_en = '" + search + "' OR name_en LIKE " +
-                                  "'%" + search +
-                                   "%' OR name_jp = '" + search + "' OR name_jp LIKE '%");
-
+    protected String defaultSQLQuery(String search) {
         return "SELECT * FROM " + conn.getTable() +  " WHERE name_en = '" + search + "' OR name_en LIKE '%" + search +
                 "%' OR name_jp = '" + search + "' OR name_jp LIKE '%" + search + "%'";
     }

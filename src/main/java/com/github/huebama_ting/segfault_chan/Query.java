@@ -29,11 +29,21 @@ public abstract class Query {
         return getEntry(input);
     }
 
-    protected DBConnection getConn() {
+    public DBConnection getConn() {
         return conn;
     }
 
     protected abstract ArrayList<DBEntry> processQuery(Statement stmt, String query) throws SQLException;
 
-    protected abstract String determineQueryType(String search);
+    protected String determineQueryType(String search) {
+        if (search.matches("^[0-9]*")) {
+            return "SELECT * FROM " + conn.getTable() + " WHERE id = " + search;
+        } else if (search.contains("★")) {
+            return "SELECT * FROM " + conn.getTable() + " WHERE rarity LIKE '%" + search.charAt(0) + "%'";
+        }
+
+        return defaultSQLQuery(search);
+    }
+
+    protected abstract String defaultSQLQuery(String search);
 }
