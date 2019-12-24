@@ -30,15 +30,20 @@ public class MessageCentre {
         } else if (message[0].equals("!craftessence") || message[0].equals("!ce")) {
             ceLookup(event, message[1]);
         } else if (message[0].equals("!yolo")) {
-            yoloRoll(event);
+            yoloRoll(event, message[1]);
         }
     }
 
-    private void yoloRoll(MessageReceivedEvent event) {
-        DBEntry result = fgoGacha.highTierGacha();
+    private void yoloRoll(MessageReceivedEvent event, String message) {
+        if (message.equals("sq") || message.equals("fp")) {
+            DBEntry result = message.equals("sq") ? fgoGacha.highTierGacha() : fgoGacha.lowTierGacha();
 
-        msgCreator.createEmbed(result);
-        event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
+            msgCreator.createEmbed(result);
+            event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
+        } else {
+            msgCreator.createMessage("Attach \"sq\" or \"fp\" as args!");
+            event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
+        }
     }
     
     private void servantLookup(MessageReceivedEvent event, String message) {

@@ -36,6 +36,23 @@ public class FGOGacha extends Gacha {
 
     @Override
     public DBEntry lowTierGacha() {
-        return null;
+        byte roll = roll();
+        ArrayList<DBEntry> resultList;
+
+        if (roll == 0) {
+            resultList = servantQuery.getEntry("3★");
+        } else if (roll < 4) {
+            resultList = servantQuery.getEntry("2★");
+        } else if (roll < 44) {
+            resultList = servantQuery.getEntry("1★");
+        } else if (roll < 48) {
+            resultList = ceQuery.getEntry("3★");
+        } else if (roll < 61) {
+            resultList = ceQuery.getEntry("2★");
+        } else {
+            resultList = ceQuery.getEntry("1★");
+        }
+
+        return resultList.get((byte) (Math.random() * resultList.size()));
     }
 }
