@@ -4,18 +4,15 @@
 
 package com.github.huebama_ting.segfault_chan;
 
+/**
+ * The {@code CraftEssence} class models a Fate/Grand Order craft essence. Each CraftEssence object contains information
+ * regarding each craft essence, such as stats and effects.
+ */
 public class CraftEssence extends DBEntry {
 
-    private short idn;
-    private String enName;
-    private String jpName;
-    private String rarity;
-    private short hp;
-    private short atk;
     private String effect;
-    private String img;
 
-    public CraftEssence(short idn, String name_en, String name_jp, String rarity, short hp, short atk, String effect,
+    public CraftEssence(short idn, String name_en, String name_jp, String rarity, int hp, short atk, String effect,
                         String img) {
         this.idn = idn;
         this.enName = name_en;
@@ -27,38 +24,6 @@ public class CraftEssence extends DBEntry {
         this.img = img;
     }
 
-    public short getIdn() {
-        return idn;
-    }
-
-    public String getEnName() {
-        return enName;
-    }
-
-    public String getJpName() {
-        return jpName;
-    }
-
-    public String getRarity() {
-        return rarity;
-    }
-
-    public short getHp() {
-        return hp;
-    }
-
-    public short getAtk() {
-        return atk;
-    }
-
-    public String getEffect() {
-        return effect;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
     @Override
     public String toString() {
         return "**ID: **" + idn + "\n**Rarity: **" + rarity + "\n**Max HP: **" + hp + "\n**Max ATK: **" + atk +
@@ -66,7 +31,7 @@ public class CraftEssence extends DBEntry {
     }
 
     @Override
-    public String getNameNewline() {
+    public String getGachaNewline() {
         return enName + " (" + rarity + " CE)" + "\n";
     }
 }

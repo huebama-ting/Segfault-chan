@@ -25,7 +25,7 @@ public class CraftEssenceQuery extends Query {
 
         while (rs.next()) {
             CraftEssence ce = new CraftEssence(rs.getShort("id"), rs.getString("name_en"), rs.getString("name_jp"),
-                                                 rs.getString("rarity"), rs.getShort("hp"), rs.getShort("atk"),
+                                                 rs.getString("rarity"), rs.getInt("hp"), rs.getShort("atk"),
                                                  rs.getString("effect"), rs.getString("img"));
 
             ceList.add(ce);

@@ -4,14 +4,13 @@
 
 package com.github.huebama_ting.segfault_chan;
 
+/**
+ * The {@code Servant} class models a Fate/Grand Order servant. Each Servant object contains information regarding each
+ * servant, such as stats and lore snippets.
+ */
 public class Servant extends DBEntry {
 
-    private short idn;
-    private String enName;
-    private String jpName;
     private String servClass;
-    private int hp;
-    private short atk;
     private String traits;
     private String illust;
     private String cv;
@@ -20,9 +19,26 @@ public class Servant extends DBEntry {
     private String gender;
     private String nick;
     private String attrib;
-    private String rarity;
-    private String img;
 
+    /**
+     * Constructs a {@code Servant} object containing the specified parameters.
+     * @param idn the servant's ID number.
+     * @param enName the servant's English name.
+     * @param jpName the servant's Japanese name.
+     * @param servClass the servant's class.
+     * @param hp the servant's maximum HP.
+     * @param atk the servant's maximum ATK.
+     * @param traits the servant's traits.
+     * @param illust the servant's illustrator.
+     * @param cv the servant's voice actor.
+     * @param align the servant's alignment.
+     * @param htWt the servant's height and weight.
+     * @param gender the servant's gender.
+     * @param nick the servant's nicknames.
+     * @param attrib the servant's attribute.
+     * @param rarity the servant's rarity in game.
+     * @param img a link to an image of the servant.
+     */
     public Servant(short idn, String enName, String jpName, String servClass, int hp, short atk, String traits,
                    String illust, String cv, String align, String htWt, String gender, String nick, String attrib,
                    String rarity, String img) {
@@ -44,70 +60,6 @@ public class Servant extends DBEntry {
         this.img = img;
     }
 
-    public short getIdn() {
-        return idn;
-    }
-
-    public String getEnName() {
-        return enName;
-    }
-
-    public String getJpName() {
-        return jpName;
-    }
-
-    public String getServClass() {
-        return servClass;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
-    public short getAtk() {
-        return atk;
-    }
-
-    public String getTraits() {
-        return traits;
-    }
-
-    public String getIllust() {
-        return illust;
-    }
-
-    public String getCv() {
-        return cv;
-    }
-
-    public String getAlign() {
-        return align;
-    }
-
-    public String getHtWt() {
-        return htWt;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getNick() {
-        return nick;
-    }
-
-    public String getAttrib() {
-        return attrib;
-    }
-
-    public String getRarity() {
-        return rarity;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
     @Override
     public String toString() {
         return "**ID: **" + idn + "\n**Class: **" + servClass + "\n**Rarity: **" + rarity + "\n**Max HP: **" + hp +
@@ -117,7 +69,7 @@ public class Servant extends DBEntry {
     }
 
     @Override
-    public String getNameNewline() {
+    public String getGachaNewline() {
         return enName + " (" + rarity + " Servant)" + "\n";
     }
 }
