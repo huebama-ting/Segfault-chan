@@ -8,7 +8,11 @@ public abstract class Gacha {
         return (byte) (Math.random() * 100);
     }
 
-    public abstract DBEntry lowTierGacha();
+    public abstract DBEntry lowTierGachaYolo();
 
-    public abstract DBEntry highTierGacha();
+    public abstract DBEntry highTierGachaYolo();
+
+    public abstract ArrayList<DBEntry> lowTierGachaMulti();
+
+    public abstract ArrayList<DBEntry> highTierGachaMulti();
 }

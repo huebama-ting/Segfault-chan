@@ -31,15 +31,29 @@ public class MessageCentre {
             ceLookup(event, message[1]);
         } else if (message[0].equals("!yolo")) {
             yoloRoll(event, message[1]);
+        } else if (message[0].equals("!multi")) {
+            multiRoll(event, message[1]);
         }
     }
 
     private void yoloRoll(MessageReceivedEvent event, String message) {
         if (message.equals("sq") || message.equals("fp")) {
-            DBEntry result = message.equals("sq") ? fgoGacha.highTierGacha() : fgoGacha.lowTierGacha();
+            DBEntry result = message.equals("sq") ? fgoGacha.highTierGachaYolo() : fgoGacha.lowTierGachaYolo();
 
             msgCreator.createEmbed(result);
             event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
+        } else {
+            msgCreator.createMessage("Attach \"sq\" or \"fp\" as args!");
+            event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
+        }
+    }
+
+    private void multiRoll(MessageReceivedEvent event, String message) {
+        if (message.equals("sq") || message.equals("fp")) {
+            ArrayList<DBEntry> result = message.equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
+
+            msgCreator.createMessage(result);
+            event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue());
         } else {
             msgCreator.createMessage("Attach \"sq\" or \"fp\" as args!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();

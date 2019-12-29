@@ -111,4 +111,9 @@ public class Servant extends DBEntry {
                 cv + "\n" + "**Alignment: **" + align + "\n**Height / Weight: **" + htWt + "\n**Gender: **" + gender +
                 "\n**Nicknames: **" + nick + "\n**Attribute: **" + attrib;
     }
+
+    @Override
+    public String getNameNewline() {
+        return enName + " (" + rarity + " Servant)" + "\n";
+    }
 }

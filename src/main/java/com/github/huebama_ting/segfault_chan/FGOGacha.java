@@ -13,7 +13,7 @@ public class FGOGacha extends Gacha {
     }
 
     @Override
-    public DBEntry highTierGacha() {
+    public DBEntry highTierGachaYolo() {
         byte roll = roll();
         ArrayList<DBEntry> resultList;
 
@@ -31,11 +31,11 @@ public class FGOGacha extends Gacha {
             resultList = ceQuery.getEntry("3★");
         }
 
-        return resultList.get((byte) (Math.random() * resultList.size()));
+        return resultList.get((short) (Math.random() * resultList.size()));
     }
 
     @Override
-    public DBEntry lowTierGacha() {
+    public DBEntry lowTierGachaYolo() {
         byte roll = roll();
         ArrayList<DBEntry> resultList;
 
@@ -53,6 +53,63 @@ public class FGOGacha extends Gacha {
             resultList = ceQuery.getEntry("1★");
         }
 
-        return resultList.get((byte) (Math.random() * resultList.size()));
+        return resultList.get((short) (Math.random() * resultList.size()));
+    }
+
+    @Override
+    public ArrayList<DBEntry> highTierGachaMulti() {
+        ArrayList<DBEntry> multiResults = new ArrayList<>();
+
+        for (int i = 0; i < 8; i++) {
+            multiResults.add(highTierGachaYolo());
+        }
+
+        multiResults.add(bonusServantRoll());
+        multiResults.add(bonusRoll());
+
+        return multiResults;
+    }
+
+    private Servant bonusServantRoll() {
+        byte roll = roll();
+        ArrayList<DBEntry> resultList;
+
+        if (roll == 0) {
+            resultList = servantQuery.getEntry("5★");
+        } else if (roll < 20) {
+            resultList = servantQuery.getEntry("4★");
+        } else {
+            resultList = servantQuery.getEntry("3★");
+        }
+
+        return (Servant) resultList.get((short) (Math.random() * resultList.size()));
+    }
+
+    private DBEntry bonusRoll() {
+        byte roll = roll();
+        ArrayList<DBEntry> resultList;
+
+        if (roll == 0) {
+            resultList = servantQuery.getEntry("5★");
+        } else if (roll < 9) {
+            resultList = servantQuery.getEntry("4★");
+        } else if (roll < 20) {
+            resultList = ceQuery.getEntry("5★");
+        } else {
+            resultList = ceQuery.getEntry("4★");
+        }
+
+        return resultList.get((short) (Math.random() * resultList.size()));
+    }
+
+    @Override
+    public ArrayList<DBEntry> lowTierGachaMulti() {
+        ArrayList<DBEntry> multiResults = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            multiResults.add(lowTierGachaYolo());
+        }
+
+        return multiResults;
     }
 }

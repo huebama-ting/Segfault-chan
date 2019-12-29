@@ -3,6 +3,8 @@ package com.github.huebama_ting.segfault_chan;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 
+import java.util.ArrayList;
+
 public class MessageCreator {
 
     private MessageBuilder msgBuilder;
@@ -21,9 +23,12 @@ public class MessageCreator {
         return ebdBuilder;
     }
 
-    public void createMessage(DBEntry entry) {
+    public void createMessage(ArrayList<DBEntry> entry) {
         msgBuilder.clear();
-        msgBuilder.append(entry);
+
+        msgBuilder.append("**");
+        entry.forEach(dbe -> msgBuilder.append(dbe.getNameNewline()));
+        msgBuilder.append("**");
     }
 
     public void createMessage(String text) {

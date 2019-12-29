@@ -60,4 +60,9 @@ public class CraftEssence extends DBEntry {
         return "**ID: **" + idn + "\n**Rarity: **" + rarity + "\n**Max HP: **" + hp + "\n**Max ATK: **" + atk +
                 "\n**Effect(s): **\n" + effect;
     }
+
+    @Override
+    public String getNameNewline() {
+        return enName + " (" + rarity + " CE)" + "\n";
+    }
 }
