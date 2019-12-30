@@ -9,10 +9,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+
+/**
+ * {@code ServantQuery} is the class that represents all queries done to retrieve a
+ * {@link com.github.huebama_ting.segfault_chan.Servant}
+ */
 public class ServantQuery extends Query {
 
     private DBConnection conn;
 
+    /**
+     * Constructs a database connection using the FGO database and Servant table.
+     */
     public ServantQuery() {
         super("fgo", "servants");
         conn = getConn();

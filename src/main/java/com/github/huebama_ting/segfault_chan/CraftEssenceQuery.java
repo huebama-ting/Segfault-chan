@@ -9,10 +9,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * {@code CraftEssenceQuery} is the class that represents all queries done to retrieve a
+ * {@link com.github.huebama_ting.segfault_chan.CraftEssence}
+ */
 public class CraftEssenceQuery extends Query {
 
     private DBConnection conn;
 
+    /**
+     * Constructs a database connection using the FGO database and Craft Essence table.
+     */
     public CraftEssenceQuery() {
         super("fgo", "ce");
         conn = getConn();

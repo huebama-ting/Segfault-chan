@@ -6,11 +6,19 @@ package com.github.huebama_ting.segfault_chan;
 
 import java.util.ArrayList;
 
+/**
+ * The {@code FGOGacha} class models the gacha of the game FGO.
+ */
 public class FGOGacha extends Gacha {
 
     private ServantQuery servantQuery;
     private CraftEssenceQuery ceQuery;
 
+    /**
+     * Constructs a {@code FGOGacha} object that handles all FGO gacha related operations.
+     * @param servantQuery the query engine for Servants.
+     * @param ceQuery the query engine for Craft Essences.
+     */
     public FGOGacha(ServantQuery servantQuery, CraftEssenceQuery ceQuery) {
         this.servantQuery = servantQuery;
         this.ceQuery = ceQuery;
@@ -74,6 +82,11 @@ public class FGOGacha extends Gacha {
         return multiResults;
     }
 
+    /**
+     * Helper method that performs the bonus servant roll.
+     * @return the Servant that was rolled.
+     */
+    // The details of the bonus rolls have not been disclosed by DW and as such guesstimates have been made.
     private Servant bonusServantRoll() {
         byte roll = roll();
         ArrayList<DBEntry> resultList;
@@ -89,6 +102,11 @@ public class FGOGacha extends Gacha {
         return (Servant) resultList.get((short) (Math.random() * resultList.size()));
     }
 
+    /**
+     * Helper method that performs the bonus roll.
+     * @return the DBEntry (Servant/CE) that was rolled.
+     */
+    // The details of the bonus rolls have not been disclosed by DW and as such guesstimates have been made.
     private DBEntry bonusRoll() {
         byte roll = roll();
         ArrayList<DBEntry> resultList;

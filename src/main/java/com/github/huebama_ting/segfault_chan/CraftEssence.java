@@ -12,6 +12,17 @@ public class CraftEssence extends DBEntry {
 
     private String effect;
 
+    /**
+     * Constructs a {@code CraftEssence} object containing the specified parameters.
+     * @param idn the craft essence's ID number.
+     * @param name_en the craft essence's English name.
+     * @param name_jp the craft essence's Japanese name.
+     * @param rarity the craft essence's rarity.
+     * @param hp the craft essence's maximum HP.
+     * @param atk the craft essence's maximum ATK.
+     * @param effect the craft essence's effects.
+     * @param img the craft essence's image link.
+     */
     public CraftEssence(short idn, String name_en, String name_jp, String rarity, int hp, short atk, String effect,
                         String img) {
         this.idn = idn;

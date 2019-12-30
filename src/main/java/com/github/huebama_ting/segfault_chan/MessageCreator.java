@@ -6,40 +6,66 @@ package com.github.huebama_ting.segfault_chan;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
-
 import java.util.ArrayList;
 
+/**
+ * The {@code MessageCreator} class packages messages into an easy to send form for the bot.
+ */
 public class MessageCreator {
 
     private MessageBuilder msgBuilder;
     private EmbedBuilder ebdBuilder;
 
+    /**
+     * Constructs a {@code MessageCreator} object.
+     */
     public MessageCreator() {
         msgBuilder = new MessageBuilder();
         ebdBuilder = new EmbedBuilder();
     }
 
+    /**
+     * Retrieves this {@code MessageCreator}'s {@code MessageBuilder}.
+     * @return this instance's {@code MessageBuilder}
+     */
     public MessageBuilder getMessageBuilder() {
         return msgBuilder;
     }
 
+    /**
+     * Retrieves this {@code MessageCreator}'s {@code EmbedBuilder}.
+     * @return this instance's {@code EmbedBuilder}
+     */
     public EmbedBuilder getEmbedBuilder() {
         return ebdBuilder;
     }
 
-    public void createMessage(ArrayList<DBEntry> entry) {
+    /**
+     * Create an message containing info from a {@link com.github.huebama_ting.segfault_chan.DBEntry}
+     * @param entries the {@link java.util.ArrayList} containing the
+     *                {@link com.github.huebama_ting.segfault_chan.DBEntry}'s to send as a message.
+     */
+    public void createMessage(ArrayList<DBEntry> entries) {
         msgBuilder.clear();
 
         msgBuilder.append("**");
-        entry.forEach(dbe -> msgBuilder.append(dbe.getNameNewline()));
+        entries.forEach(dbe -> msgBuilder.append(dbe.getGachaNewline()));
         msgBuilder.append("**");
     }
 
+    /**
+     * Create an message containing the passed in {@link java.lang.String}.
+     * @param text the text to send as a message.
+     */
     public void createMessage(String text) {
         msgBuilder.clear();
         msgBuilder.append(text);
     }
 
+    /**
+     * Create an embed containing info from a {@link com.github.huebama_ting.segfault_chan.DBEntry}
+     * @param entry the {@link com.github.huebama_ting.segfault_chan.DBEntry} to send as an embed.
+     */
     public void createEmbed(DBEntry entry) {
         ebdBuilder.clear();
 
@@ -50,6 +76,10 @@ public class MessageCreator {
         }
     }
 
+    /**
+     * Packages the passed in {@link com.github.huebama_ting.segfault_chan.Servant} to a embed.
+     * @param servant the {@link com.github.huebama_ting.segfault_chan.Servant} to send as an embed.
+     */
     private void setupServant(Servant servant) {
         ebdBuilder.setThumbnail(servant.getImg());
         ebdBuilder.setColor(65535);
@@ -58,6 +88,10 @@ public class MessageCreator {
         ebdBuilder.addField("", servant.toString(), false);
     }
 
+    /**
+     * Packages the passed in {@link com.github.huebama_ting.segfault_chan.CraftEssence} to a embed.
+     * @param ce the {@link com.github.huebama_ting.segfault_chan.CraftEssence} to send as an embed.
+     */
     private void setupCE(CraftEssence ce) {
         ebdBuilder.setThumbnail(ce.getImg());
         ebdBuilder.setColor(32768);

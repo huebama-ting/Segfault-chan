@@ -5,7 +5,7 @@
 package com.github.huebama_ting.segfault_chan;
 
 /**
- * The {@code DBEntry} class encompasses all types of entries possible in the bot database.
+ * The {@code DBEntry} abstract class encompasses all types of entries possible in the bot database.
  */
 public abstract class DBEntry {
 
