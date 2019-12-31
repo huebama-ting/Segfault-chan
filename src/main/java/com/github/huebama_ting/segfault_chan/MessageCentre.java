@@ -5,6 +5,7 @@
 package com.github.huebama_ting.segfault_chan;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,8 @@ public class MessageCentre {
     private CraftEssenceQuery ceQuery;
     private FGOGacha fgoGacha;
     private MessageCreator msgCreator;
+    private ArrayList<DBEntry> lastSelected;
+    private int selectedIndex;
 
     /**
      * Constructs a {@code MessageCentre} object.
@@ -25,6 +28,8 @@ public class MessageCentre {
         ceQuery = new CraftEssenceQuery();
         fgoGacha = new FGOGacha(servantQuery, ceQuery);
         msgCreator = new MessageCreator();
+        lastSelected = null;
+        selectedIndex = 0;
     }
 
     /**
@@ -73,10 +78,13 @@ public class MessageCentre {
      */
     private void multiRoll(MessageReceivedEvent event, String message) {
         if (message.equals("sq") || message.equals("fp")) {
-            ArrayList<DBEntry> result = message.equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
+            lastSelected = message.equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
 
-            msgCreator.createMessage(result);
-            event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue());
+            msgCreator.createMessage(lastSelected);
+            event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue(msg -> {
+                msg.addReaction("U+1F448").queue();
+                msg.addReaction("U+1F449").queue();
+            }));
         } else { // Invalid argument form
             msgCreator.createMessage("Attach \"sq\" or \"fp\" as args!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
@@ -89,17 +97,13 @@ public class MessageCentre {
      * @param message the command from the event.
      */
     private void servantLookup(MessageReceivedEvent event, String message) {
-        ArrayList<DBEntry> result = servantQuery.getEntry(message);
+        lastSelected = servantQuery.getEntry(message);
 
-        if (result.size() == 0) { // No matches
+        if (lastSelected.size() == 0) { // No matches
             msgCreator.createMessage("Servant not found!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
-        } else if (result.size() == 1) { // One match
-            msgCreator.createEmbed(result.get(0));
-            event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
-        } else { // Multiple matches
-            msgCreator.createMessage("Multiple results found: \n\n" + getMatches(result));
-            event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
+        } else { // One or multiple matches
+            sendEmbed(event);
         }
     }
 
@@ -109,17 +113,27 @@ public class MessageCentre {
      * @param message the command from the event.
      */
     private void ceLookup(MessageReceivedEvent event, String message) {
-        ArrayList<DBEntry> result = ceQuery.getEntry(message);
+        lastSelected = ceQuery.getEntry(message);
 
-        if (result.size() == 0) { // No matches
+        if (lastSelected.size() == 0) { // No matches
             msgCreator.createMessage("Craft Essence not found!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
-        } else if (result.size() == 1) { // One match
-            msgCreator.createEmbed(result.get(0));
+        } else { // One or multiple matches
+            sendEmbed(event);
+        }
+    }
+
+    private void sendEmbed(MessageReceivedEvent event) {
+        if (lastSelected.size() == 1) { // One match
+            msgCreator.createEmbed(lastSelected.get(0));
             event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
         } else { // Multiple matches
-            msgCreator.createMessage("Multiple results found: \n\n" + getMatches(result));
-            event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
+            msgCreator.createMessage("Multiple results found:");
+            msgCreator.createEmbed(lastSelected, selectedIndex);
+            event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue(sent -> event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue(msg -> {
+                msg.addReaction("U+1f448").queue();
+                msg.addReaction("U+1f449").queue();
+            }));
         }
     }
 
@@ -144,5 +158,22 @@ public class MessageCentre {
         }
 
         return out.toString();
+    }
+
+    public void navigateEmbed(MessageReactionAddEvent event) {
+        if (event.getUser().isBot()) {
+            return;
+        }
+
+        if (event.getReactionEmote().getAsCodepoints().equals("U+1f449")) {
+            selectedIndex++;
+        } else {
+            selectedIndex--;
+        }
+
+        selectedIndex = selectedIndex < 0 ? lastSelected.size() - 1 : selectedIndex;
+        selectedIndex = selectedIndex > lastSelected.size() - 1 ? 0 : selectedIndex;
+        msgCreator.createEmbed(lastSelected, selectedIndex);
+        event.getChannel().editMessageById(event.getMessageId(), msgCreator.getEmbedBuilder().build()).queue();
     }
 }

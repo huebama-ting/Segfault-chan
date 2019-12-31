@@ -64,8 +64,20 @@ public class MessageCreator {
 
     /**
      * Create an embed containing info from a {@link com.github.huebama_ting.segfault_chan.DBEntry}
-     * @param entry the {@link com.github.huebama_ting.segfault_chan.DBEntry} to send as an embed.
+     * @param entries the {@link com.github.huebama_ting.segfault_chan.DBEntry} to send as an embed.
      */
+    public void createEmbed(ArrayList<DBEntry> entries, int index) {
+        ebdBuilder.clear();
+
+        if (entries.get(index) instanceof Servant) {
+            setupServant((Servant) entries.get(index));
+        } else {
+            setupCE((CraftEssence) entries.get(index));
+        }
+
+        ebdBuilder.setFooter((entries.indexOf(entries.get(index)) + 1) + "/" + entries.size());
+    }
+
     public void createEmbed(DBEntry entry) {
         ebdBuilder.clear();
 
