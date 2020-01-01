@@ -16,14 +16,11 @@ import java.util.ArrayList;
  */
 public class ServantQuery extends Query {
 
-    private DBConnection conn;
-
     /**
      * Constructs a database connection using the FGO database and Servant table.
      */
     public ServantQuery() {
         super("fgo", "servants");
-        conn = getConn();
     }
 
     @Override

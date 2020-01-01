@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public abstract class Query {
 
-    private DBConnection conn;
+    protected DBConnection conn;
 
     /**
      * Constructs a {@code Query} object to serve as the database connection to the specified database and table to
@@ -43,14 +43,6 @@ public abstract class Query {
         }
 
         return resultList;
-    }
-
-    /**
-     * Returns the {@code DBConnection} for this {@code Query}.
-     * @return the DBConnection for this instance.
-     */
-    public DBConnection getConn() {
-        return conn;
     }
 
     /**

@@ -15,14 +15,11 @@ import java.util.ArrayList;
  */
 public class CraftEssenceQuery extends Query {
 
-    private DBConnection conn;
-
     /**
      * Constructs a database connection using the FGO database and Craft Essence table.
      */
     public CraftEssenceQuery() {
         super("fgo", "ce");
-        conn = getConn();
     }
 
     @Override
