@@ -83,11 +83,11 @@ public class MessageCentre {
     private void multiRoll(MessageReceivedEvent event, String message) {
         if (message.equals("sq") || message.equals("fp")) {
             lastSelected = message.equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
-
             msgCreator.createMessage(lastSelected);
             event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue(msg -> {
                 msg.addReaction(SCROLL_BACK_REACT).queue();
                 msg.addReaction(SCROLL_AHEAD_REACT).queue();
+                msgId = msg.getIdLong();
             }));
         } else { // Invalid argument form
             msgCreator.createMessage("Attach \"sq\" or \"fp\" as args!");
@@ -171,7 +171,7 @@ public class MessageCentre {
             return;
         }
 
-        //Check if the reaction was to scroll ahead or behind
+        // Check if the reaction was to scroll ahead or behind
         if (event.getReactionEmote().getAsCodepoints().equals(SCROLL_AHEAD_REACT)) {
             selectedIndex++;
         } else {
