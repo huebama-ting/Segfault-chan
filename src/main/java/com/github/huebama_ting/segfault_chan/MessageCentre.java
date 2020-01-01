@@ -81,10 +81,12 @@ public class MessageCentre {
      * @param message the command from the event.
      */
     private void multiRoll(MessageReceivedEvent event, String message) {
+        selectedIndex = 0;
+
         if (message.equals("sq") || message.equals("fp")) {
             lastSelected = message.equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
-            msgCreator.createMessage(lastSelected);
-            event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue(msg -> {
+            msgCreator.createEmbed(lastSelected, selectedIndex);
+            event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue(msg -> {
                 msg.addReaction(SCROLL_BACK_REACT).queue();
                 msg.addReaction(SCROLL_AHEAD_REACT).queue();
                 msgId = msg.getIdLong();
@@ -128,6 +130,8 @@ public class MessageCentre {
     }
 
     private void sendEmbed(MessageReceivedEvent event) {
+        selectedIndex = 0;
+
         if (lastSelected.size() == 1) { // One match
             msgCreator.createEmbed(lastSelected.get(0));
             event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
