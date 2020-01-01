@@ -42,12 +42,6 @@ public abstract class DBEntry {
     }
 
     /**
-     * Retrieves a summary of the entry.
-     * @return the basic information of the entry.
-     */
-    public abstract String toString();
-
-    /**
      * Retrieves the English name of the entry and its rarity, terminated by a newline ({@code \n}).
      * @return the English name of the entry and its rarity, terminated with a newline.
      */
