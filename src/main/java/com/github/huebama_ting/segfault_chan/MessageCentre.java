@@ -19,6 +19,9 @@ public class MessageCentre {
     private MessageCreator msgCreator;
     private ArrayList<DBEntry> lastSelected;
     private int selectedIndex;
+    private long msgId;
+    private static final String SCROLL_BACK_REACT = "U+1f448";
+    private static final String SCROLL_AHEAD_REACT = "U+1f449";
 
     /**
      * Constructs a {@code MessageCentre} object.
@@ -30,6 +33,7 @@ public class MessageCentre {
         msgCreator = new MessageCreator();
         lastSelected = null;
         selectedIndex = 0;
+        msgId = 0;
     }
 
     /**
@@ -82,8 +86,8 @@ public class MessageCentre {
 
             msgCreator.createMessage(lastSelected);
             event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue(msg -> {
-                msg.addReaction("U+1F448").queue();
-                msg.addReaction("U+1F449").queue();
+                msg.addReaction(SCROLL_BACK_REACT).queue();
+                msg.addReaction(SCROLL_AHEAD_REACT).queue();
             }));
         } else { // Invalid argument form
             msgCreator.createMessage("Attach \"sq\" or \"fp\" as args!");
@@ -131,8 +135,9 @@ public class MessageCentre {
             msgCreator.createMessage("Multiple results found:");
             msgCreator.createEmbed(lastSelected, selectedIndex);
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue(sent -> event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue(msg -> {
-                msg.addReaction("U+1f448").queue();
-                msg.addReaction("U+1f449").queue();
+                msg.addReaction(SCROLL_BACK_REACT).queue();
+                msg.addReaction(SCROLL_AHEAD_REACT).queue();
+                msgId = msg.getIdLong();
             }));
         }
     }
@@ -161,11 +166,13 @@ public class MessageCentre {
     }
 
     public void navigateEmbed(MessageReactionAddEvent event) {
-        if (event.getUser().isBot()) {
+        // Do not attempt to edit messages that do not belong to bot or were sent by other bots or itself
+        if (event.getMessageIdLong() != msgId || event.getUser().isBot()) {
             return;
         }
 
-        if (event.getReactionEmote().getAsCodepoints().equals("U+1f449")) {
+        //Check if the reaction was to scroll ahead or behind
+        if (event.getReactionEmote().getAsCodepoints().equals(SCROLL_AHEAD_REACT)) {
             selectedIndex++;
         } else {
             selectedIndex--;
@@ -174,6 +181,6 @@ public class MessageCentre {
         selectedIndex = selectedIndex < 0 ? lastSelected.size() - 1 : selectedIndex;
         selectedIndex = selectedIndex > lastSelected.size() - 1 ? 0 : selectedIndex;
         msgCreator.createEmbed(lastSelected, selectedIndex);
-        event.getChannel().editMessageById(event.getMessageId(), msgCreator.getEmbedBuilder().build()).queue();
+        event.getChannel().editMessageById(msgId, msgCreator.getEmbedBuilder().build()).queue();
     }
 }
