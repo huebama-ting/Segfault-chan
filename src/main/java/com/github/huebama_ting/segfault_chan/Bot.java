@@ -22,7 +22,7 @@ public class Bot {
     public static void main(String[] args) {
         try {
             // Bot token provided as command line argument
-            JDA bot = new JDABuilder(args[0]).setActivity(Activity.playing("with oof")).addEventListeners(new Listeners()).build();
+            JDA bot = JDABuilder.createDefault(args[0]).setActivity(Activity.playing("with oof")).addEventListeners(new Listeners()).build();
         } catch (LoginException | IllegalArgumentException ex) {
             System.err.println(ex.getMessage());
             ex.printStackTrace();

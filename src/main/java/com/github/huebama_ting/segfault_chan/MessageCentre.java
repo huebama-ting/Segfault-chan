@@ -52,9 +52,11 @@ public class MessageCentre {
         } else if (message[0].equals("!craftessence") || message[0].equals("!ce")) {
             ceLookup(event, message[1]);
         } else if (message[0].equals("!yolo")) {
-            yoloRoll(event, message[1]);
+            yoloRoll(event, message);
         } else if (message[0].equals("!multi")) {
-            multiRoll(event, message[1]);
+            multiRoll(event, message);
+        } else if (message[0].equals("!collection")) {
+            collection(event);
         }
     }
 
@@ -63,14 +65,14 @@ public class MessageCentre {
      * @param event the event to react to.
      * @param message the command from the event.
      */
-    private void yoloRoll(MessageReceivedEvent event, String message) {
-        if (message.equals("sq") || message.equals("fp")) {
-            DBEntry result = message.equals("sq") ? fgoGacha.highTierGachaYolo() : fgoGacha.lowTierGachaYolo();
+    private void yoloRoll(MessageReceivedEvent event, String[] message) {
+        if (message.length == 2) {
+            DBEntry result = message[1].equals("sq") ? fgoGacha.highTierGachaYolo() : fgoGacha.lowTierGachaYolo();
 
             msgCreator.createEmbed(result);
-            event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
+            event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue(msg -> event.getChannel().sendMessage("Use `!collection` to see your collection!").queue());
         } else {
-            msgCreator.createMessage("Attach \"sq\" or \"fp\" as args!");
+            msgCreator.createMessage("Attach \"sq\" or \"fp\" for your gacha choice!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
         }
     }
@@ -80,19 +82,20 @@ public class MessageCentre {
      * @param event the event to react to.
      * @param message the command from the event.
      */
-    private void multiRoll(MessageReceivedEvent event, String message) {
+    private void multiRoll(MessageReceivedEvent event, String[] message) {
         selectedIndex = 0;
 
-        if (message.equals("sq") || message.equals("fp")) {
-            lastSelected = message.equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
+        if (message.length == 2) {
+            lastSelected = message[1].equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
             msgCreator.createEmbed(lastSelected, selectedIndex);
             event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue(msg -> {
+                event.getChannel().sendMessage("Use `!collection` to see your collection!").queue();
                 msg.addReaction(SCROLL_BACK_REACT).queue();
                 msg.addReaction(SCROLL_AHEAD_REACT).queue();
                 msgId = msg.getIdLong();
             }));
         } else { // Invalid argument form
-            msgCreator.createMessage("Attach \"sq\" or \"fp\" as args!");
+            msgCreator.createMessage("Attach \"sq\" or \"fp\" for your gacha choice!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
         }
     }
@@ -182,9 +185,14 @@ public class MessageCentre {
             selectedIndex--;
         }
 
+        // Reset bounds to rollover to either first item or last item
         selectedIndex = selectedIndex < 0 ? lastSelected.size() - 1 : selectedIndex;
         selectedIndex = selectedIndex > lastSelected.size() - 1 ? 0 : selectedIndex;
         msgCreator.createEmbed(lastSelected, selectedIndex);
         event.getChannel().editMessageById(msgId, msgCreator.getEmbedBuilder().build()).queue();
+    }
+
+    private void collection(MessageReceivedEvent event) {
+        event.getChannel().sendMessage("Under construction, stay tuned kek").queue();
     }
 }

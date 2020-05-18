@@ -15,24 +15,19 @@ public class CraftEssence extends DBEntry {
     /**
      * Constructs a {@code CraftEssence} object containing the specified parameters.
      * @param idn the craft essence's ID number.
-     * @param name_en the craft essence's English name.
-     * @param name_jp the craft essence's Japanese name.
+     * @param enName the craft essence's English name.
+     * @param jpName the craft essence's Japanese name.
      * @param rarity the craft essence's rarity.
      * @param hp the craft essence's maximum HP.
      * @param atk the craft essence's maximum ATK.
      * @param effect the craft essence's effects.
      * @param img the craft essence's image link.
      */
-    public CraftEssence(short idn, String name_en, String name_jp, String rarity, int hp, short atk, String effect,
+    public CraftEssence(short idn, String enName, String jpName, String rarity, int hp, short atk, String effect,
                         String img) {
-        this.idn = idn;
-        this.enName = name_en;
-        this.jpName = name_jp;
-        this.rarity = rarity;
-        this.hp = hp;
-        this.atk = atk;
-        this.effect = effect;
-        this.img = img;
+        super(idn, enName, jpName, rarity, hp, atk, img);
+
+        this.effect= effect;
     }
 
     @Override

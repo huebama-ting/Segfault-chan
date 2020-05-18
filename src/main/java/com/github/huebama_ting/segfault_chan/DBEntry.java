@@ -17,6 +17,16 @@ public abstract class DBEntry {
     protected short atk;
     protected String img;
 
+    public DBEntry(short idn, String enName, String jpName, String rarity, int hp, short atk, String img) {
+        this.idn = idn;
+        this.enName = enName;
+        this.jpName = jpName;
+        this.rarity = rarity;
+        this.hp = hp;
+        this.atk = atk;
+        this.img = img;
+    }
+
     /**
      * Retrieves the English name for this {@code DBEntry} object.
      * @return the English name of this servant.

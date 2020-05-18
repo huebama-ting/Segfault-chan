@@ -42,12 +42,8 @@ public class Servant extends DBEntry {
     public Servant(short idn, String enName, String jpName, String servClass, int hp, short atk, String traits,
                    String illust, String cv, String align, String htWt, String gender, String nick, String attrib,
                    String rarity, String img) {
-        this.idn = idn;
-        this.enName = enName;
-        this.jpName = jpName;
+        super(idn, enName, jpName, rarity, hp, atk, img);
         this.servClass = servClass;
-        this.hp = hp;
-        this.atk = atk;
         this.traits = traits;
         this.illust = illust;
         this.cv = cv;
@@ -56,8 +52,6 @@ public class Servant extends DBEntry {
         this.gender = gender;
         this.nick = nick;
         this.attrib = attrib;
-        this.rarity = rarity;
-        this.img = img;
     }
 
     @Override

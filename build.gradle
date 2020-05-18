@@ -6,7 +6,7 @@ plugins {
 
 group 'com.github.huebama-ting'
 version '0.1'
-def jdaVersion = '4.1.0_88'
+def jdaVersion = '4.1.1_153'
 mainClassName = 'com.github.huebama_ting.segfault_chan.Bot'
 sourceCompatibility = targetCompatibility = 1.8
 

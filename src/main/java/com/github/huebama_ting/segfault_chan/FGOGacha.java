@@ -13,6 +13,7 @@ public class FGOGacha extends Gacha {
 
     private ServantQuery servantQuery;
     private CraftEssenceQuery ceQuery;
+    private static final byte MULTI_ROLL_AMOUNT = 10;
 
     /**
      * Constructs a {@code FGOGacha} object that handles all FGO gacha related operations.
@@ -72,7 +73,7 @@ public class FGOGacha extends Gacha {
     public ArrayList<DBEntry> highTierGachaMulti() {
         ArrayList<DBEntry> multiResults = new ArrayList<>();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < MULTI_ROLL_AMOUNT - 2; i++) {
             multiResults.add(highTierGachaYolo());
         }
 
@@ -128,7 +129,7 @@ public class FGOGacha extends Gacha {
     public ArrayList<DBEntry> lowTierGachaMulti() {
         ArrayList<DBEntry> multiResults = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < MULTI_ROLL_AMOUNT; i++) {
             multiResults.add(lowTierGachaYolo());
         }
 
