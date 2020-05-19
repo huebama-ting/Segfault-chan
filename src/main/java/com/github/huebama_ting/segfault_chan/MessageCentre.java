@@ -15,9 +15,10 @@ public class MessageCentre {
     
     private ServantQuery servantQuery;
     private CraftEssenceQuery ceQuery;
+    private UserQuery userQuery;
     private FGOGacha fgoGacha;
     private MessageCreator msgCreator;
-    private ArrayList<DBEntry> lastSelected;
+    private ArrayList<DBEntry> results;
     private int selectedIndex;
     private long msgId;
     private static final String SCROLL_BACK_REACT = "U+1f448";
@@ -29,9 +30,10 @@ public class MessageCentre {
     public MessageCentre() {
         servantQuery = new ServantQuery();
         ceQuery = new CraftEssenceQuery();
+        userQuery = new UserQuery();
         fgoGacha = new FGOGacha(servantQuery, ceQuery);
         msgCreator = new MessageCreator();
-        lastSelected = null;
+        results = null;
         selectedIndex = 0;
         msgId = 0;
     }
@@ -86,8 +88,8 @@ public class MessageCentre {
         selectedIndex = 0;
 
         if (message.length == 2) {
-            lastSelected = message[1].equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
-            msgCreator.createEmbed(lastSelected, selectedIndex);
+            results = message[1].equals("sq") ? fgoGacha.highTierGachaMulti() : fgoGacha.lowTierGachaMulti();
+            msgCreator.createEmbed(results, selectedIndex);
             event.getChannel().sendMessage(event.getMember().getAsMention() + ", you rolled:\n").queue(sent -> event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue(msg -> {
                 event.getChannel().sendMessage("Use `!collection` to see your collection!").queue();
                 msg.addReaction(SCROLL_BACK_REACT).queue();
@@ -106,9 +108,9 @@ public class MessageCentre {
      * @param message the command from the event.
      */
     private void servantLookup(MessageReceivedEvent event, String message) {
-        lastSelected = servantQuery.getEntry(message);
+        results = servantQuery.getEntry(message);
 
-        if (lastSelected.size() == 0) { // No matches
+        if (results.size() == 0) { // No matches
             msgCreator.createMessage("Servant not found!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
         } else { // One or multiple matches
@@ -122,9 +124,9 @@ public class MessageCentre {
      * @param message the command from the event.
      */
     private void ceLookup(MessageReceivedEvent event, String message) {
-        lastSelected = ceQuery.getEntry(message);
+        results = ceQuery.getEntry(message);
 
-        if (lastSelected.size() == 0) { // No matches
+        if (results.size() == 0) { // No matches
             msgCreator.createMessage("Craft Essence not found!");
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue();
         } else { // One or multiple matches
@@ -135,12 +137,12 @@ public class MessageCentre {
     private void sendEmbed(MessageReceivedEvent event) {
         selectedIndex = 0;
 
-        if (lastSelected.size() == 1) { // One match
-            msgCreator.createEmbed(lastSelected.get(0));
+        if (results.size() == 1) { // One match
+            msgCreator.createEmbed(results.get(0));
             event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue();
         } else { // Multiple matches
             msgCreator.createMessage("Multiple results found:");
-            msgCreator.createEmbed(lastSelected, selectedIndex);
+            msgCreator.createEmbed(results, selectedIndex);
             event.getChannel().sendMessage(msgCreator.getMessageBuilder().build()).queue(sent -> event.getChannel().sendMessage(msgCreator.getEmbedBuilder().build()).queue(msg -> {
                 msg.addReaction(SCROLL_BACK_REACT).queue();
                 msg.addReaction(SCROLL_AHEAD_REACT).queue();
@@ -186,13 +188,14 @@ public class MessageCentre {
         }
 
         // Reset bounds to rollover to either first item or last item
-        selectedIndex = selectedIndex < 0 ? lastSelected.size() - 1 : selectedIndex;
-        selectedIndex = selectedIndex > lastSelected.size() - 1 ? 0 : selectedIndex;
-        msgCreator.createEmbed(lastSelected, selectedIndex);
+        selectedIndex = selectedIndex < 0 ? results.size() - 1 : selectedIndex;
+        selectedIndex = selectedIndex > results.size() - 1 ? 0 : selectedIndex;
+        msgCreator.createEmbed(results, selectedIndex);
         event.getChannel().editMessageById(msgId, msgCreator.getEmbedBuilder().build()).queue();
     }
 
     private void collection(MessageReceivedEvent event) {
+        results = userQuery.getEntry(event.getMember().getId());
         event.getChannel().sendMessage("Under construction, stay tuned kek").queue();
     }
 }

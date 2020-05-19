@@ -8,7 +8,7 @@ package com.github.huebama_ting.segfault_chan;
  * The {@code Servant} class models a Fate/Grand Order servant. Each Servant object contains information regarding each
  * servant, such as stats and lore snippets.
  */
-public class Servant extends DBEntry {
+public class Servant extends DBMaterialEntry {
 
     private String servClass;
     private String traits;
@@ -63,7 +63,7 @@ public class Servant extends DBEntry {
     }
 
     @Override
-    public String getGachaNewline() {
+    public String getInfoNewline() {
         return enName + " (" + rarity + " Servant)" + "\n";
     }
 }

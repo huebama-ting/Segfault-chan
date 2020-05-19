@@ -20,7 +20,7 @@ public class ServantQuery extends Query {
      * Constructs a database connection using the FGO database and Servant table.
      */
     public ServantQuery() {
-        super("fgo", "servants");
+        super("fgo", "servant");
     }
 
     @Override

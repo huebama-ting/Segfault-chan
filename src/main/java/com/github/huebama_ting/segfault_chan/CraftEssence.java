@@ -8,7 +8,7 @@ package com.github.huebama_ting.segfault_chan;
  * The {@code CraftEssence} class models a Fate/Grand Order craft essence. Each CraftEssence object contains information
  * regarding each craft essence, such as stats and effects.
  */
-public class CraftEssence extends DBEntry {
+public class CraftEssence extends DBMaterialEntry {
 
     private String effect;
 
@@ -37,7 +37,7 @@ public class CraftEssence extends DBEntry {
     }
 
     @Override
-    public String getGachaNewline() {
+    public String getInfoNewline() {
         return enName + " (" + rarity + " CE)" + "\n";
     }
 }

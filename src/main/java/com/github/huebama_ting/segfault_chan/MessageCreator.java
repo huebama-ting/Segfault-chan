@@ -49,7 +49,7 @@ public class MessageCreator {
         msgBuilder.clear();
 
         msgBuilder.append("**");
-        entries.forEach(dbe -> msgBuilder.append(dbe.getGachaNewline()));
+        entries.forEach(dbe -> msgBuilder.append(dbe.getInfoNewline()));
         msgBuilder.append("**");
     }
 
@@ -110,5 +110,9 @@ public class MessageCreator {
         ebdBuilder.setTitle(ce.getEnName());
         ebdBuilder.setDescription(ce.getJpName());
         ebdBuilder.addField("", ce.toString(), false);
+    }
+
+    private void setupUser(User user) {
+
     }
 }
