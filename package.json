@@ -1,0 +1,32 @@
+{
+  "name": "segfault-chan",
+  "version": "1.0.0",
+  "description": "JavaScript Discord bot",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huebama-ting/Segfault-chan.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "huebama-ting",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/huebama-ting/Segfault-chan/issues"
+  },
+  "homepage": "https://github.com/huebama-ting/Segfault-chan#readme",
+  "dependencies": {
+    "@discordjs/opus": "^0.3.2",
+    "discord.js": "^12.2.0",
+    "mysql2": "^2.1.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.5.0"
+  }
+}
