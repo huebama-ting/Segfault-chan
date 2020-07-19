@@ -1,2 +1,2 @@
 # Segfault-chan
-Java discord bot
+JavaScript Discord bot
