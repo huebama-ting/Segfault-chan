@@ -27,6 +27,8 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^7.5.0"
+    "eslint": "^7.5.0",
+    "logform": "^2.2.0",
+    "triple-beam": "^1.3.0"
   }
 }
