@@ -30,6 +30,20 @@ module.exports = {
         const formatInfo = (servant) => {
             return `**ID: **${servant.id}\n**Class: **${servant.class}\n**Rarity: **${servant.rarity}\n**Max HP: **${servant.hp}\n**Max ATK: **${servant.atk}\n**Traits: **${servant.traits}\n**Illustrator: **${servant.illust}\n**CV: **${servant.cv}\n**Alignment: **${servant.align}\n**Height / Weight: **${servant.ht_wt}\n**Gender: **${servant.gender}\n**Nicknames: **${servant.nick}\n**Attribute: **${servant.attrib}`;  
         };
+
+        const formatStatus = (servant) => {
+            let status = '';
+
+            if (servant.event) {
+                status += 'https://grandorder.wiki/images/thumb/e/e5/Icon_Gift.png/20px-Icon_Gift.png';
+            } else if (servant.limited) {
+                status += 'https://grandorder.wiki/images/2/29/Icon_Star.png';
+            } else if (servant.story_lock) {
+                status += 'https://grandorder.wiki/images/0/07/Icon_Lock.png';
+            }
+
+            return status;
+        };
         const fullPrepStmt = constructPreparedStatement(args[0]);
         let servants;
 
@@ -44,10 +58,10 @@ module.exports = {
         } else if (servants.length === 1) {
             const embed = new discord.MessageEmbed()
                 .setColor('#FF00FF')
-                .setTitle(servants[0].name_en)
+                .setAuthor(servants[0].name_en, formatStatus(servants[0]))
                 .setDescription(servants[0].name_jp)
                 .setThumbnail(servants[0].img)
-                .addFields({ name: '\u200b', value: '\u200b', inline: false }, { name: '\nProfile\n', value: formatInfo(servants[0]), inline: false });
+                .addFields({ name: '\nProfile\n', value: formatInfo(servants[0]), inline: false });
             msg.channel.send(embed);
         }
     }
