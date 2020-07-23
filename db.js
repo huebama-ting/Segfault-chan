@@ -13,9 +13,11 @@ const pool = sql.createPool({
     queueLimit: 0
 });
 
-exports.executeQuery = async(query) => {
-    let connection = await pool.getConnection();
-    let [results, metadata] = await connection.execute(query);
+module.exports = {
+    async executeQuery(query, args) {
+        const connection = await pool.getConnection();
+        const [results, metadata] = await connection.execute(query, args);
 
-    return results;
+        return results;
+    }
 };

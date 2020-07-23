@@ -5,9 +5,7 @@ const fs = require('fs');
 const discord = require('discord.js');
 const winston = require('winston');
 const chalk = require('chalk');
-const sql = require('mysql2/promise');
-const db = require('./db');
-const tripleBeam = require('triple-beam')
+const tripleBeam = require('triple-beam');
 const client = new discord.Client();
 const errorHunter = winston.format(info => {
     if (info.error) {
@@ -33,8 +31,7 @@ const errorPrinter = winston.format(info => {
 const winstonConsoleFormat = winston.format.combine(
     errorHunter(),
     errorPrinter(),
-    winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`)
-);
+    winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`));
 const logger = winston.createLogger({
     level: 'silly',
     transports: [
@@ -45,18 +42,40 @@ const logger = winston.createLogger({
     format: winstonConsoleFormat,
 });
 
-/*(async () => {
-    connection = await sql.createConnection({
-        host: 'localhost',
-        user: dbUser,
-        password: dbPass,
-        database: dbName
-    });
-    a();
-})();
-*/
+// Split the command from the arguments
+const smartSplit = (str, sep, n) => {
+    // Don't split if there are no arguments 
+    if (str.match(/ .+/g) === null) {
+        return [str];
+    }
+    
+    const out = [];
+
+    for (; n > 0; n--) {
+        out.push(str.slice(sep.lastIndex, sep.exec(str).index));
+    }
+
+    out.push(str.slice(sep.lastIndex));
+    
+    return out;
+};
+
+// Get command's aliases
+const getAlias = (cmd) => {
+    let aliasMsg = `${prefix}${cmd.name}`;
+
+    for (const alias of cmd.aliases) {
+        aliasMsg += ` / ${prefix}${alias}`;
+    }
+
+    return aliasMsg;
+};
+
 // Initialize logger
-client.on('ready', () => logger.log('info', 'Bot initialized!'));
+client.on('ready', () => {
+    client.user.setPresence({ activity: { name: 'with oof' }, status: 'online' }).catch(console.error);
+    logger.log('info', 'Bot initialized!');
+});
 client.on('debug', msg => logger.log('debug', chalk.blue(msg)));
 client.on('warn', msg => logger.log('warn', chalk.orange(msg)));
 client.on('error', err => logger.log('error', chalk.red(err)));
@@ -79,14 +98,23 @@ client.on('message', msg => {
         return;
     }
 
-    const args = msg.content.slice(prefix.length).trim().split(/ +/);
-    const cmdName = args.shift().toLowerCase();
+    const args = smartSplit(msg.content, / +/g, 1);
+    const cmdName = args.shift().slice(prefix.length).trim().toLowerCase();
+    const cmd = client.commands.get(cmdName) || client.commands.find(alias => alias.aliases && alias.aliases.includes(cmdName));
 
-    if (!client.commands.has(cmdName)) {
-        return;
+    if (!cmd) {
+        return msg.reply('I\'m sorry, I don\'t know that command!');
     }
 
-    const cmd = client.commands.get(cmdName);
+    if (cmd.args && args.length === 0 || args.length !== cmd.parameters) {
+        let usageMsg = 'you didn\'t provide the correct argument(s)!';
+
+        if (cmd.usage) {
+            usageMsg += `\nUsage: \`${getAlias(cmd)} ${cmd.usage}\``;
+        }
+
+        return msg.reply(usageMsg);
+    }
 
     try {
         cmd.execute(msg, args);
@@ -98,4 +126,3 @@ client.on('message', msg => {
 
 // Bot token passed in from config file
 client.login(token);
-
