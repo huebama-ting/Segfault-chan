@@ -1,4 +1,7 @@
+'use strict';
+
 const db = require('../common/db');
+
 const discord = require('discord.js');
 const chalk = require('chalk');
 

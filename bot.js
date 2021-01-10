@@ -1,11 +1,13 @@
 'use strict';
 
 const { prefix, token } = require('./config.json');
+
 const fs = require('fs');
 const discord = require('discord.js');
 const winston = require('winston');
 const chalk = require('chalk');
 const tripleBeam = require('triple-beam');
+
 const client = new discord.Client();
 const errorHunter = winston.format(info => {
     if (info.error != null) {

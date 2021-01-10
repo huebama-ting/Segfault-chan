@@ -1,3 +1,5 @@
+'use strict';
+
 const { apiUrl } = require('../config.json');
 const { handleResponse, logError, sendReply, formatInfo, formatDescription, formatGenres } = require('../common/helpers');
 
