@@ -1,6 +1,6 @@
 'use strict';
 
-const { apiUrl } = require('../config.json');
+const { aniApiUrl } = require('../config.json');
 const { handleResponse, logError, sendReply, formatInfo, formatDescription, formatGenres } = require('../common/helpers');
 const { SOURCES } = require('../common/sources');
 const { STATUSES } = require('../common/statuses');
@@ -15,7 +15,7 @@ module.exports = {
     args: true,
     parameters: 1,
     usage: '<name of manga>',
-    async execute(msg, args) {
+    execute(msg, args) {
         const makeEmbed = (info) => {
             const embed = new discord.MessageEmbed()
             .setColor('#FF00FF')
@@ -72,6 +72,6 @@ module.exports = {
             })
         };
 
-        fetch(apiUrl, options).then(handleResponse).then(makeEmbed).catch(logError);
+        fetch(aniApiUrl, options).then(handleResponse).then(makeEmbed).catch(logError);
     }
 };

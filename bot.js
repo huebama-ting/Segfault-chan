@@ -108,7 +108,7 @@ client.on('message', msg => {
         return msg.reply('I\'m sorry, I don\'t know that command!');
     }
 
-    if (cmd.args != null && args.length === 0 || args.length !== cmd.parameters) {
+    if (cmd.args && args.length === 0 || args.length !== cmd.parameters) {
         let usageMsg = 'you didn\'t provide the correct argument(s)!';
 
         if (cmd.usage != null) {

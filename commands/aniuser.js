@@ -1,6 +1,6 @@
 'use strict';
 
-const { apiUrl } = require('../config.json');
+const { aniApiUrl } = require('../config.json');
 const { handleResponse, logError, sendReply, formatInfo } = require('../common/helpers');
 
 const discord = require('discord.js');
@@ -13,7 +13,7 @@ module.exports = {
     args: true,
     parameters: 1,
     usage: '<name of user>',
-    async execute(msg, args) {
+    execute(msg, args) {
         const makeEmbed = (info) => {
             const embed = new discord.MessageEmbed()
             .setColor('#0000FF')
@@ -74,6 +74,6 @@ module.exports = {
             })
         };
 
-        fetch(apiUrl, options).then(handleResponse).then(makeEmbed).catch(logError);
+        fetch(aniApiUrl, options).then(handleResponse).then(makeEmbed).catch(logError);
     }
 };
