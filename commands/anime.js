@@ -90,7 +90,7 @@ module.exports = {
             return data;
         }
         const query = `
-        query getByName ($search: String) {
+        query getAnimeByName ($search: String) {
             Media (search: $search, type: ANIME) {
                 title {
                     english

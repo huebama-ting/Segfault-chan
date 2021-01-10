@@ -8,7 +8,7 @@ const chalk = require('chalk');
 const tripleBeam = require('triple-beam');
 const client = new discord.Client();
 const errorHunter = winston.format(info => {
-    if (info.error) {
+    if (info.error != null) {
         return info;
     }
 
@@ -18,7 +18,7 @@ const errorHunter = winston.format(info => {
     return info;
 });
 const errorPrinter = winston.format(info => {
-    if (!info.error) {
+    if (info.error == null) {
         return info;
     }
 
@@ -102,14 +102,14 @@ client.on('message', msg => {
     const cmdName = args.shift().slice(prefix.length).trim().toLowerCase();
     const cmd = client.commands.get(cmdName) || client.commands.find(alias => alias.aliases && alias.aliases.includes(cmdName));
 
-    if (!cmd) {
+    if (cmd == null) {
         return msg.reply('I\'m sorry, I don\'t know that command!');
     }
 
-    if (cmd.args && args.length === 0 || args.length !== cmd.parameters) {
+    if (cmd.args != null && args.length === 0 || args.length !== cmd.parameters) {
         let usageMsg = 'you didn\'t provide the correct argument(s)!';
 
-        if (cmd.usage) {
+        if (cmd.usage != null) {
             usageMsg += `\nUsage: \`${getAlias(cmd)} ${cmd.usage}\``;
         }
 
