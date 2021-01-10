@@ -18,9 +18,9 @@ module.exports = {
             const embed = new discord.MessageEmbed()
             .setColor('#0000FF')
             .setTitle(info.data.User.name)
-            .setDescription('**ID**\n' + info.data.User.id)
             .setThumbnail(info.data.User.avatar.medium)
             .addFields(
+                { name: 'ID', value: info.data.User.id, inline: false },
                 { name: 'About', value: formatInfo(info.data.User.about), inline: false },
                 { name: 'Anime Watched', value: info.data.User.statistics.anime.count, inline: true },
                 { name: 'Episodes Watched', value: info.data.User.statistics.anime.episodesWatched, inline: true },
