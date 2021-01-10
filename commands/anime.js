@@ -2,6 +2,9 @@
 
 const { apiUrl } = require('../config.json');
 const { handleResponse, logError, sendReply, formatInfo, formatDescription, formatGenres } = require('../common/helpers');
+const { SEASONS } = require('../common/seasons');
+const { SOURCES } = require('../common/sources');
+const { STATUSES } = require('../common/statuses');
 
 const discord = require('discord.js');
 const fetch = require('node-fetch');
@@ -25,12 +28,12 @@ module.exports = {
                 { name: 'Description', value: formatDescription(info.data.Media.description), inline: false },
                 { name: 'Format', value: formatInfo(info.data.Media.format), inline: true },
                 { name: 'Episodes', value: formatInfo(info.data.Media.episodes), inline: true },
-                { name: 'Status', value: formatInfo(info.data.Media.status), inline: true },
-                { name: 'Season', value: info.data.Media.season + ' ' + info.data.Media.seasonYear, inline: true },
+                { name: 'Status', value: STATUSES.get(info.data.Media.status), inline: true },
+                { name: 'Season', value: SEASONS.get(info.data.Media.season) + ' ' + info.data.Media.seasonYear, inline: true },
                 { name: 'Studio', value: formatStudio(info.data.Media.studios.nodes), inline: true },
                 { name: 'Genres', value: formatGenres(info.data.Media.genres), inline: true },
                 { name: 'Average Score', value: formatInfo(info.data.Media.averageScore) !== 'N/A' ? formatInfo(info.data.Media.averageScore) + '%' : formatInfo(info.data.Media.averageScore), inline: true },
-                { name: 'Source', value: formatInfo(info.data.Media.source), inline: true }
+                { name: 'Source', value: SOURCES.get(info.data.Media.source), inline: true }
             );
             sendReply(msg, embed);
         };
