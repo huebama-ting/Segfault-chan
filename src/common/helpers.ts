@@ -1,26 +1,27 @@
-'use strict';
+import { red } from 'chalk';
+import { Message, MessageEmbed } from 'discord.js';
+import { Response } from 'node-fetch';
+import { Logger } from 'winston';
 
-const chalk = require('chalk');
-
-function handleResponse(response) {
+export function handleResponse(response: Response): any | Promise<never> {
   return response.json().then(json => {
     return response.ok ? json : Promise.reject(json);
   });
 }
 
-function logError(error) {
-  console.log(error);
+export function logError(err: Error, logger: Logger): void {
+  logger.error(red(err));
 }
 
-function sendReply(msg, embed) {
+export function sendReply(msg: Message, embed: MessageEmbed, logger: Logger): void {
   try {
     msg.channel.send(embed);
   } catch (err) {
-    msg.client.extLog.error(chalk.red(err));
+    logger.error(red(err));
   }
 }
 
-function formatInfo(str) {
+export function formatInfo(str: string): string {
   if (str === null) {
     return 'N/A';
   }
@@ -28,7 +29,7 @@ function formatInfo(str) {
   return str;
 }
 
-function formatDescription(description) {
+export function formatDescription(description: string): string {
   if (description === null) {
     return 'N/A';
   }
@@ -36,7 +37,7 @@ function formatDescription(description) {
   return description.replace(/(<br>)+/g, '\u000a').trim();
 }
 
-function formatGenres(array) {
+export function formatGenres(array: string[]): string {
   let formattedString = '';
 
   for (const str of array) {
@@ -51,12 +52,3 @@ function formatGenres(array) {
 
   return formattedString;
 }
-
-module.exports = {
-  handleResponse,
-  logError,
-  sendReply,
-  formatInfo,
-  formatDescription,
-  formatGenres
-};
