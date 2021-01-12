@@ -1,6 +1,6 @@
 'use strict';
 
-const { catApiUrl } = require('../config.json');
+const { catApiUrl } = require('../../config.json');
 const { handleResponse, logError } = require('../common/helpers');
 
 const fetch = require('node-fetch');

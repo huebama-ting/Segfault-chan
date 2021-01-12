@@ -1,6 +1,6 @@
 'use strict';
 
-const { prefix, token } = require('./config.json');
+const { prefix, token } = require('../config.json');
 
 const fs = require('fs');
 const discord = require('discord.js');
@@ -38,8 +38,8 @@ const logger = winston.createLogger({
   level: 'silly',
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: './logs/bot.log' }),
-    new winston.transports.File({ filename: './logs/bot_error.log', level: 'error' }),
+    new winston.transports.File({ filename: '../logs/bot.log' }),
+    new winston.transports.File({ filename: '../logs/bot_error.log', level: 'error' }),
   ],
   format: winstonConsoleFormat,
 });

@@ -1,6 +1,7 @@
 'use strict';
 
-const { dbUser, dbPass, dbName } = require('../config.json');
+const { dbUser, dbPass, dbName } = require('../../config.json');
+
 const sql = require('mysql2/promise');
 
 const pool = sql.createPool({

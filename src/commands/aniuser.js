@@ -1,6 +1,6 @@
 'use strict';
 
-const { aniApiUrl } = require('../config.json');
+const { aniApiUrl } = require('../../config.json');
 const { handleResponse, logError, sendReply, formatInfo } = require('../common/helpers');
 
 const discord = require('discord.js');
