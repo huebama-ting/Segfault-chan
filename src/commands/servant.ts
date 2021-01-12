@@ -12,7 +12,7 @@ export const command: Command = {
   args: true,
   parameters: 1,
   usage: '<name/nickname/id #>',
-  async execute(msg: Message, args: string[], logger: Logger) {
+  async execute(msg: Message, logger: Logger, args?: string[]) {
     const constructPreparedStatement = (param: string) => {
       // Argument was a name
       if (param.match(/[0-9]/g) === null) {
@@ -47,7 +47,7 @@ export const command: Command = {
 
       return status;
     };
-    const fullPrepStmt = constructPreparedStatement(args[0]);
+    const fullPrepStmt = constructPreparedStatement(args != null && args.length > 0 ? args[0] : '');
     let servants;
 
     try {        

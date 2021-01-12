@@ -132,7 +132,7 @@ export default class Bot {
       }
 
       try {
-        cmd.execute(msg, args, this.logger);
+        cmd.execute(msg, this.logger, args);
       } catch (err) {
         this.logger.error(red(err));
         msg.reply('There was an error when executing that command!');

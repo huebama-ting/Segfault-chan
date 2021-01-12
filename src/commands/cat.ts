@@ -13,7 +13,7 @@ export const command: Command = {
   args: false,
   parameters: 0,
   usage: '',
-  execute(msg: Message, args: string[], logger: Logger) {
+  execute(msg: Message, logger: Logger) {
     const sendCat = (res: any) => {
       msg.channel.send(res.file);
     };

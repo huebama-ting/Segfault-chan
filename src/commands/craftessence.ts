@@ -12,7 +12,7 @@ export const command: Command = {
   args: true,
   parameters: 1,
   usage: '<name/id #>',
-  async execute(msg: Message, args: string[], logger: Logger) {
+  async execute(msg: Message, logger: Logger, args?: string[]) {
     const constructPreparedStatement = (param: string) => {
       // Argument was a name
       if (param.match(/[0-9]/g) === null) {
@@ -33,7 +33,7 @@ export const command: Command = {
     const formatInfo = (ce: any) => {
       return `**ID: **${ce.id}\n**Rarity: **${ce.rarity}\n**Max HP: **${ce.hp}\n**Max ATK: **${ce.atk}\n**Effects:\n**${ce.effect}`;  
     };
-    const fullPrepStmt = constructPreparedStatement(args[0]);
+    const fullPrepStmt = constructPreparedStatement(args != null && args.length > 0 ? args[0] : '');
     let ces;
 
     try {        

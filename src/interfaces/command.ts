@@ -8,5 +8,5 @@ export default interface Command {
   args: boolean,
   parameters: number,
   usage?: string,
-  execute(msg: Message, args: string[], logger: Logger): void
-};
+  execute(msg: Message, logger: Logger, args?: string[]): void
+}

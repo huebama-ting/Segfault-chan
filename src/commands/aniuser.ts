@@ -13,7 +13,7 @@ export const command: Command = {
   args: true,
   parameters: 1,
   usage: '<name of user>',
-  execute(msg: Message, args: string[], logger: Logger) {
+  execute(msg: Message, logger: Logger, args?: string[]) {
     const makeEmbed = (info: any) => {
       const embed = new MessageEmbed()
         .setColor('#0000FF')
@@ -60,7 +60,7 @@ export const command: Command = {
       }
     `;
     const variables = {
-      name: args[0]
+      name: args != null && args.length > 0 ? args[0] : ''
     };
     const options = {
       method: 'POST',
