@@ -10,73 +10,73 @@ const tripleBeam = require('triple-beam');
 
 const client = new discord.Client();
 const errorHunter = winston.format(info => {
-    if (info.error != null) {
-        return info;
-    }
-
-    const splat = info[tripleBeam.SPLAT] || [];
-    info.error = splat.find(obj => obj instanceof Error);
-
+  if (info.error != null) {
     return info;
+  }
+
+  const splat = info[tripleBeam.SPLAT] || [];
+  info.error = splat.find(obj => obj instanceof Error);
+
+  return info;
 });
 const errorPrinter = winston.format(info => {
-    if (info.error == null) {
-        return info;
-    }
-
-    // Handle case where Error has no stack.
-    const errorMsg = info.error.stack || info.error.toString();
-    info.message += `\n${errorMsg}`;
-
+  if (info.error == null) {
     return info;
+  }
+
+  // Handle case where Error has no stack.
+  const errorMsg = info.error.stack || info.error.toString();
+  info.message += `\n${errorMsg}`;
+
+  return info;
 });
 const winstonConsoleFormat = winston.format.combine(
-    errorHunter(),
-    errorPrinter(),
-    winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`));
+  errorHunter(),
+  errorPrinter(),
+  winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`));
 const logger = winston.createLogger({
-    level: 'silly',
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({ filename: './logs/bot.log' }),
-        new winston.transports.File({ filename: './logs/bot_error.log', level: 'error' }),
-    ],
-    format: winstonConsoleFormat,
+  level: 'silly',
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: './logs/bot.log' }),
+    new winston.transports.File({ filename: './logs/bot_error.log', level: 'error' }),
+  ],
+  format: winstonConsoleFormat,
 });
 
 // Split the command from the arguments
 const smartSplit = (str, sep, n) => {
-    // Don't split if there are no arguments 
-    if (str.match(/ .+/g) === null) {
-        return [str];
-    }
+  // Don't split if there are no arguments 
+  if (str.match(/ .+/g) === null) {
+    return [str];
+  }
     
-    const out = [];
+  const out = [];
 
-    for (; n > 0; n--) {
-        out.push(str.slice(sep.lastIndex, sep.exec(str).index));
-    }
+  for (; n > 0; n--) {
+    out.push(str.slice(sep.lastIndex, sep.exec(str).index));
+  }
 
-    out.push(str.slice(sep.lastIndex));
+  out.push(str.slice(sep.lastIndex));
     
-    return out;
+  return out;
 };
 
 // Get command's aliases
 const getAlias = (cmd) => {
-    let aliasMsg = `${prefix}${cmd.name}`;
+  let aliasMsg = `${prefix}${cmd.name}`;
 
-    for (const alias of cmd.aliases) {
-        aliasMsg += ` / ${prefix}${alias}`;
-    }
+  for (const alias of cmd.aliases) {
+    aliasMsg += ` / ${prefix}${alias}`;
+  }
 
-    return aliasMsg;
+  return aliasMsg;
 };
 
 // Initialize logger
 client.on('ready', () => {
-    client.user.setPresence({ activity: { name: 'with oof' }, status: 'online' }).catch(console.error);
-    logger.log('info', 'Bot initialized!');
+  client.user.setPresence({ activity: { name: 'with oof' }, status: 'online' }).catch(console.error);
+  logger.log('info', 'Bot initialized!');
 });
 client.on('debug', msg => logger.log('debug', chalk.blue(msg)));
 client.on('warn', msg => logger.log('warn', chalk.orange(msg)));
@@ -90,40 +90,40 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 // Load commands from file
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
 }
 
 // Command event listener
 client.on('message', msg => {
-    if (!msg.content.startsWith(prefix) || msg.author.bot) {
-        return;
+  if (!msg.content.startsWith(prefix) || msg.author.bot) {
+    return;
+  }
+
+  const args = smartSplit(msg.content, / +/g, 1);
+  const cmdName = args.shift().slice(prefix.length).trim().toLowerCase();
+  const cmd = client.commands.get(cmdName) || client.commands.find(alias => alias.aliases && alias.aliases.includes(cmdName));
+
+  if (cmd == null) {
+    return msg.reply('I\'m sorry, I don\'t know that command!');
+  }
+
+  if (cmd.args && args.length === 0 || args.length !== cmd.parameters) {
+    let usageMsg = 'you didn\'t provide the correct argument(s)!';
+
+    if (cmd.usage != null) {
+      usageMsg += `\nUsage: \`${getAlias(cmd)} ${cmd.usage}\``;
     }
 
-    const args = smartSplit(msg.content, / +/g, 1);
-    const cmdName = args.shift().slice(prefix.length).trim().toLowerCase();
-    const cmd = client.commands.get(cmdName) || client.commands.find(alias => alias.aliases && alias.aliases.includes(cmdName));
+    return msg.reply(usageMsg);
+  }
 
-    if (cmd == null) {
-        return msg.reply('I\'m sorry, I don\'t know that command!');
-    }
-
-    if (cmd.args && args.length === 0 || args.length !== cmd.parameters) {
-        let usageMsg = 'you didn\'t provide the correct argument(s)!';
-
-        if (cmd.usage != null) {
-            usageMsg += `\nUsage: \`${getAlias(cmd)} ${cmd.usage}\``;
-        }
-
-        return msg.reply(usageMsg);
-    }
-
-    try {
-        cmd.execute(msg, args);
-    } catch (err) {
-        logger.error(chalk.red(err));
-        msg.reply('There was an error when executing that command!');
-    }
+  try {
+    cmd.execute(msg, args);
+  } catch (err) {
+    logger.error(chalk.red(err));
+    msg.reply('There was an error when executing that command!');
+  }
 });
 
 // Bot token passed in from config file
