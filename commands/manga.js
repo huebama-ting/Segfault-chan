@@ -54,7 +54,6 @@ module.exports = {
           genres
           averageScore
           source(version: 2)
-          }
         }
       }
     `;
