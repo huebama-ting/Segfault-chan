@@ -1,19 +1,19 @@
-'use strict';
+import { executeQuery } from '../common/db';
+import Command from '../interfaces/command';
 
-const db = require('../common/db');
+import chalk from 'chalk';
+import { Message, MessageEmbed } from 'discord.js';
+import { Logger } from 'winston';
 
-const discord = require('discord.js');
-const chalk = require('chalk');
-
-module.exports = {
+export const command: Command = {
   name: 'servant',
   aliases: ['serv'],
   description: 'Retrieve servant information entry',
   args: true,
   parameters: 1,
   usage: '<name/nickname/id #>',
-  async execute(msg, args) {
-    const constructPreparedStatement = (param) => {
+  async execute(msg: Message, args: string[], logger: Logger) {
+    const constructPreparedStatement = (param: string) => {
       // Argument was a name
       if (param.match(/[0-9]/g) === null) {
         return {
@@ -30,11 +30,11 @@ module.exports = {
     };
 
     // Format the servant data into a nice format for an embed
-    const formatInfo = (servant) => {
+    const formatInfo = (servant: any) => {
       return `**ID: **${servant.id}\n**Class: **${servant.class}\n**Rarity: **${servant.rarity}\n**Max HP: **${servant.hp}\n**Max ATK: **${servant.atk}\n**Traits: **${servant.traits}\n**Illustrator: **${servant.illust}\n**CV: **${servant.cv}\n**Alignment: **${servant.align}\n**Height / Weight: **${servant.ht_wt}\n**Gender: **${servant.gender}\n**Nicknames: **${servant.nick}\n**Attribute: **${servant.attrib}`;  
     };
 
-    const formatStatus = (servant) => {
+    const formatStatus = (servant: any) => {
       let status = '';
 
       if (servant.event) {
@@ -51,15 +51,15 @@ module.exports = {
     let servants;
 
     try {        
-      servants = await db.executeQuery(fullPrepStmt.query, fullPrepStmt.args);
+      servants = await executeQuery(fullPrepStmt.query, fullPrepStmt.args);
     } catch (err) {
-      msg.client.extLog.error(chalk.red(err));
+      logger.error(chalk.red(err));
     }
 
     if (servants.length === 0) {
       return msg.reply('no servants were found!');
     } else if (servants.length === 1) {
-      const embed = new discord.MessageEmbed()
+      const embed = new MessageEmbed()
         .setColor('#FF00FF')
         .setAuthor(servants[0].name_en, formatStatus(servants[0]))
         .setDescription(servants[0].name_jp)

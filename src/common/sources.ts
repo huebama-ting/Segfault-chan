@@ -1,6 +1,4 @@
-'use strict';
-
-const SOURCES = new Map([
+export const SOURCES = new Map([
   ['ORIGINAL', 'Original'],
   ['MANGA', 'Manga'],
   ['LIGHT_NOVEL', 'Light Novel'],
@@ -11,7 +9,3 @@ const SOURCES = new Map([
   ['DOUJINSHI', 'Doujinshi'],
   ['ANIME', 'Anime']
 ]);
-
-module.exports = {
-  SOURCES
-};

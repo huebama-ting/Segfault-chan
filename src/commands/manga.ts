@@ -1,23 +1,24 @@
 'use strict';
+import { aniApiUrl } from '../../config.json';
+import { handleResponse, logError, sendReply, formatInfo, formatDescription, formatGenres } from '../common/helpers';
+import { SOURCES } from '../common/sources';
+import { STATUSES } from '../common/statuses';
+import Command from "../interfaces/command";
 
-const { aniApiUrl } = require('../../config.json');
-const { handleResponse, logError, sendReply, formatInfo, formatDescription, formatGenres } = require('../common/helpers');
-const { SOURCES } = require('../common/sources');
-const { STATUSES } = require('../common/statuses');
+import { Message, MessageEmbed } from 'discord.js';
+import fetch from 'node-fetch';
+import { Logger } from "winston";
 
-const discord = require('discord.js');
-const fetch = require('node-fetch');
-
-module.exports = {
+export const command: Command = {
   name: 'manga',
   aliases: ['man'],
   description: 'Retrieve manga information entry',
   args: true,
   parameters: 1,
   usage: '<name of manga>',
-  execute(msg, args) {
-    const makeEmbed = (info) => {
-      const embed = new discord.MessageEmbed()
+  execute(msg: Message, args: string[], logger: Logger) {
+    const makeEmbed = (info: any) => {
+      const embed = new MessageEmbed()
         .setColor('#FF00FF')
         .setTitle(info.data.Media.title.english ?? info.data.Media.title.romaji ?? info.data.Media.title.native)
         .setDescription(info.data.Media.title.romaji + ' / ' + info.data.Media.title.native)
@@ -33,7 +34,7 @@ module.exports = {
           { name: 'Average Score', value: formatInfo(info.data.Media.averageScore) !== 'N/A' ? formatInfo(info.data.Media.averageScore) + '%' : formatInfo(info.data.Media.averageScore), inline: true },
           { name: 'Source', value: SOURCES.get(info.data.Media.source), inline: true }
         );
-      sendReply(msg, embed);
+      sendReply(msg, embed, logger);
     };
     const query = `
       query getMangaByName ($search: String) {
@@ -72,6 +73,6 @@ module.exports = {
       })
     };
 
-    fetch(aniApiUrl, options).then(handleResponse).then(makeEmbed).catch(logError);
+    fetch(aniApiUrl, options).then(handleResponse).then(makeEmbed).catch((err: Error) => logError(err, logger));
   }
 };
