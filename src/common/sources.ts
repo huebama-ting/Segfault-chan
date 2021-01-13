@@ -1,4 +1,4 @@
-export const SOURCES = new Map([
+export const SOURCES = new Map<string, string>([
   ['ORIGINAL', 'Original'],
   ['MANGA', 'Manga'],
   ['LIGHT_NOVEL', 'Light Novel'],

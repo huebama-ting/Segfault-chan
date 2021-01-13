@@ -4,7 +4,7 @@ import { Response } from 'node-fetch';
 import { Logger } from 'winston';
 
 export function handleResponse(response: Response): any | Promise<never> {
-  return response.json().then(json => {
+  return response.json().then((json: any) => {
     return response.ok ? json : Promise.reject(json);
   });
 }
@@ -37,10 +37,10 @@ export function formatDescription(description: string): string {
   return description.replace(/(<br>)+/g, '\u000a').trim();
 }
 
-export function formatGenres(array: string[]): string {
+export function formatGenres(genres: string[]): string {
   let formattedString = '';
 
-  for (const str of array) {
+  for (const str of genres) {
     formattedString += str + ', ';    
   }
 

@@ -1,6 +1,6 @@
-export const SEASONS = new Map([
+export const SEASONS = new Map<string, string>([
   ['WINTER', 'Winter'],
   ['SPRING', 'Spring'],
-  ['SUMMER', "Summer"],
+  ['SUMMER', 'Summer'],
   ['FALL', 'Fall']
 ]);
