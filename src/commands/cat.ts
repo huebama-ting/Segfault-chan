@@ -12,7 +12,6 @@ export const command: Command = {
   description: 'Get a random image of a cat',
   args: false,
   parameters: 0,
-  usage: '',
   execute(msg: Message, logger: Logger) {
     const sendCat = (res: any) => {
       msg.channel.send(res.file);
