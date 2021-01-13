@@ -1,6 +1,6 @@
 import { aniApiUrl } from '../../config.json';
 import { handleResponse, logError, sendReply, formatInfo, formatDescription, formatGenres } from '../common/helpers';
-import { animeQuery } from "../common/queries";
+import { animeQuery } from '../common/queries';
 import { SEASONS } from '../common/seasons';
 import { SOURCES } from '../common/sources';
 import { STATUSES } from '../common/statuses';
@@ -9,6 +9,7 @@ import Command from '../interfaces/command';
 import { Message, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import { Logger } from 'winston';
+import Medium from '../interfaces/json-objects/medium';
 
 export const command: Command = {
   name: 'anime',
@@ -18,7 +19,7 @@ export const command: Command = {
   parameters: 1,
   usage: '<name of anime>',
   execute(msg: Message, logger: Logger, args?: string[]) {
-    const makeEmbed = (info: any) => {
+    const makeEmbed = (info: Medium) => {
       const embed = new MessageEmbed()
         .setColor('#FF0000')
         .setTitle(info.data.Media.title.english ?? info.data.Media.title.romaji ?? info.data.Media.title.native)

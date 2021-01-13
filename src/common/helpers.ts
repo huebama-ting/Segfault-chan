@@ -21,8 +21,8 @@ export function sendReply(msg: Message, embed: MessageEmbed, logger: Logger): vo
   }
 }
 
-export function formatInfo(str: string): string {
-  if (str === null) {
+export function formatInfo(str: string | undefined): string {
+  if (str == null) {
     return 'N/A';
   }
 
