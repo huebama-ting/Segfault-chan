@@ -1,5 +1,6 @@
 import { aniApiUrl } from '../../config.json';
 import { handleResponse, logError, sendReply, formatInfo } from '../common/helpers';
+import { aniUserQuery } from "../common/queries";
 import Command from "../interfaces/command";
 
 import { Message, MessageEmbed } from 'discord.js';
@@ -33,32 +34,6 @@ export const command: Command = {
         );
       sendReply(msg, embed, logger);
     };
-    const query = `
-      query getMangaByName ($name: String) {
-        User(name: $name, sort: USERNAME) {
-          name
-          id
-          about
-          avatar {
-            medium
-          }
-          statistics {
-            anime {
-              count
-              episodesWatched
-              minutesWatched
-              meanScore
-            }
-            manga {
-              count
-              chaptersRead
-              volumesRead
-              meanScore
-            }
-          }
-        }
-      }
-    `;
     const variables = {
       name: args != null && args.length > 0 ? args[0] : ''
     };
@@ -69,7 +44,7 @@ export const command: Command = {
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        query: query,
+        query: aniUserQuery,
         variables: variables
       })
     };

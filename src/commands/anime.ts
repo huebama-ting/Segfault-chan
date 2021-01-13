@@ -1,5 +1,6 @@
 import { aniApiUrl } from '../../config.json';
 import { handleResponse, logError, sendReply, formatInfo, formatDescription, formatGenres } from '../common/helpers';
+import { animeQuery } from "../common/queries";
 import { SEASONS } from '../common/seasons';
 import { SOURCES } from '../common/sources';
 import { STATUSES } from '../common/statuses';
@@ -52,34 +53,6 @@ export const command: Command = {
   
       return formattedString;
     };
-    const query = `
-        query getAnimeByName ($search: String) {
-          Media (search: $search, type: ANIME) {
-            title {
-              english
-              romaji
-              native
-            }
-            format
-            episodes
-            status(version: 2)
-            season
-            seasonYear
-            description
-            coverImage {
-              medium
-            }
-            genres
-            studios(isMain: true) {
-              nodes {
-                name
-              }
-            }
-            averageScore
-            source(version: 2) 
-          }
-        }
-      `;
     const variables = {
       search: args != null && args.length > 0 ? args[0] : ''
     };
@@ -90,7 +63,7 @@ export const command: Command = {
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        query: query,
+        query: animeQuery,
         variables: variables
       })
     };

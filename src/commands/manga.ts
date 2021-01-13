@@ -1,6 +1,7 @@
 'use strict';
 import { aniApiUrl } from '../../config.json';
 import { handleResponse, logError, sendReply, formatInfo, formatDescription, formatGenres } from '../common/helpers';
+import { mangaQuery } from "../common/queries";
 import { SOURCES } from '../common/sources';
 import { STATUSES } from '../common/statuses';
 import Command from "../interfaces/command";
@@ -36,28 +37,6 @@ export const command: Command = {
         );
       sendReply(msg, embed, logger);
     };
-    const query = `
-      query getMangaByName ($search: String) {
-        Media (search: $search, type: MANGA, sort: ID) {
-          title {
-            english
-            romaji
-            native
-          }
-          format
-          status(version: 2)
-          chapters
-          volumes
-          description
-          coverImage {
-            medium
-          }
-          genres
-          averageScore
-          source(version: 2)
-        }
-      }
-    `;
     const variables = {
       search: args != null && args.length > 0 ? args[0] : ''
     };
@@ -68,7 +47,7 @@ export const command: Command = {
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        query: query,
+        query: mangaQuery,
         variables: variables
       })
     };
