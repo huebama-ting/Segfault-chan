@@ -1,10 +1,11 @@
 import { catApiUrl } from '../../config.json';
 import { handleResponse, logError } from '../common/helpers';
-import Command from "../interfaces/command";
+import Command from '../interfaces/command';
+import Cat from '../interfaces/json-objects/cat';
 
 import { Message } from 'discord.js';
 import fetch from 'node-fetch';
-import { Logger } from "winston";
+import { Logger } from 'winston';
 
 export const command: Command = {
   name: 'cat',
@@ -13,7 +14,7 @@ export const command: Command = {
   args: false,
   parameters: 0,
   execute(msg: Message, logger: Logger) {
-    const sendCat = (res: any) => {
+    const sendCat = (res: Cat) => {
       msg.channel.send(res.file);
     };
     const options = {

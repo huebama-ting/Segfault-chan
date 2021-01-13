@@ -1,11 +1,12 @@
 import { aniApiUrl } from '../../config.json';
 import { handleResponse, logError, sendReply, formatInfo } from '../common/helpers';
-import { aniUserQuery } from "../common/queries";
-import Command from "../interfaces/command";
+import { aniUserQuery } from '../common/queries';
+import Command from '../interfaces/command'
+import User from '../interfaces/json-objects/user';
 
 import { Message, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
-import { Logger } from "winston";
+import { Logger } from 'winston';
 
 export const command: Command = {
   name: 'aniuser',
@@ -15,7 +16,7 @@ export const command: Command = {
   parameters: 1,
   usage: '<name of user>',
   execute(msg: Message, logger: Logger, args?: string[]) {
-    const makeEmbed = (info: any) => {
+    const makeEmbed = (info: User) => {
       const embed = new MessageEmbed()
         .setColor('#0000FF')
         .setTitle(info.data.User.name)
