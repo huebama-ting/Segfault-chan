@@ -20,7 +20,7 @@ export default interface Medium {
       seasonYear: string,
       studios: {
         nodes: [
-          name: string
+          { name: string }
         ]
       },
       chapters: string,

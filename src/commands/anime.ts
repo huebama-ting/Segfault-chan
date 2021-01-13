@@ -39,10 +39,10 @@ export const command: Command = {
         );
       sendReply(msg, embed, logger);
     };
-    const formatStudio = (array: any) => {
+    const formatStudio = (studios: [{ name: string }]) => {
       let formattedString = '';
   
-      for (const str of array) {
+      for (const str of studios) {
         formattedString += str.name + ', ';
       }
   
