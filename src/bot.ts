@@ -51,6 +51,12 @@ export default class Bot {
     this.commands = this.initializeCommands();
   }
 
+  /**
+   * Helper to split a string into a command and its parameters
+   * @param str the string to be split
+   * @param sep the regex to split the string on
+   * @param n the maximum amount of times to split the string
+   */
   private smartSplit(str: string, sep: RegExp, n: number): string[] {
     // Don't split if there are no arguments 
     if (str.match(/ .+/g) === null) {
@@ -68,7 +74,11 @@ export default class Bot {
     return out;
   }
 
-  private getAlias(cmd: any): string {
+  /**
+   * Helper to retrieve the aliases for a Command
+   * @param cmd the Command to retrieve the alias for
+   */
+  private getAlias(cmd: Command): string {
     let aliasMsg = `${prefix}${cmd.name}`;
 
     for (const alias of cmd.aliases) {
@@ -78,8 +88,11 @@ export default class Bot {
     return aliasMsg;
   }
 
+  /**
+   * Private helper to read and lodthe individual command files
+   */
   private initializeCommands() {
-    const commands = new Collection<string, any>();
+    const commands = new Collection<string, Command>();
     const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.ts'));
 
     // Load commands from file
@@ -87,9 +100,13 @@ export default class Bot {
       const command = require(`./commands/${file}`);
       commands.set(command.command.name, command.command);
     }
+
     return commands;
   }
 
+  /**
+   * Private helper to initialize the bot
+   */
   private intialize() {
     // Initialize logger
     this.client.on('ready', () => {
@@ -140,6 +157,9 @@ export default class Bot {
     });
   }
 
+  /**
+   * Start the bot, token is provided via a JSON
+   */
   public start(): void {
     this.intialize();
     this.client.login(token);

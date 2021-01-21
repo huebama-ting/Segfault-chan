@@ -1,3 +1,6 @@
+/**
+ * The GraphQL query to look up an anime
+ */
 export const animeQuery = `
   query getAnimeByName ($search: String) {
     Media (search: $search, type: ANIME) {
@@ -27,6 +30,9 @@ export const animeQuery = `
   }
 `;
 
+/**
+ * The GraphQL query to look up a manga
+ */
 export const mangaQuery = `
   query getMangaByName ($search: String) {
     Media (search: $search, type: MANGA, sort: ID) {
@@ -50,6 +56,9 @@ export const mangaQuery = `
   }
 `;
 
+/**
+ * The GraphQL query to look up a user
+ */
 export const aniUserQuery = `
   query getMangaByName ($name: String) {
     User(name: $name, sort: USERNAME) {
