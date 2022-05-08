@@ -13,3 +13,4 @@ yarn-error.log
 .history/*
 
 config.json
+logs/
