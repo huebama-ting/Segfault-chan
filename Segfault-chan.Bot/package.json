@@ -1,0 +1,34 @@
+{
+  "name": "segfault-chan.bot",
+  "version": "2.0.0",
+  "description": "Discord bot",
+  "main": "bot.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huebama-ting/Segfault-chan.git"
+  },
+  "keywords": [
+    "bot",
+    "discord",
+    "typescript",
+    "discordjs"
+  ],
+  "author": "huebama-ting",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huebama-ting/Segfault-chan/issues"
+  },
+  "homepage": "https://github.com/huebama-ting/Segfault-chan#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.15.0",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  }
+}
