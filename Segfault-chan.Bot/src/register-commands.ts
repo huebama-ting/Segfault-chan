@@ -2,7 +2,11 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord-api-types/v9';
 
-import { clientId, guildIds, token } from 'src/config/config.json';
+import {
+  clientId,
+  guildIds,
+  token
+} from 'src/config/config.json';
 import { logger } from 'src/logger/logger';
 import { readFiles } from 'src/shared/utils';
 
