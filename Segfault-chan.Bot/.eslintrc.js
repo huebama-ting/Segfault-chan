@@ -8,7 +8,6 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
     'eol-last': 'error',
     'eqeqeq': ['error', 'smart'],
     'no-empty-function': ['error', { 'allow': ['constructors'] }],

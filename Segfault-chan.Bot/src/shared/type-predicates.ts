@@ -24,5 +24,5 @@ export function isInteraction(interaction: unknown): interaction is Interaction 
 }
 
 export function isString(message: unknown): message is string {
-  return typeof message === 'string';
+  return typeof(message) === 'string';
 }

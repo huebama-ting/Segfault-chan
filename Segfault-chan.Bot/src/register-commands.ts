@@ -12,11 +12,15 @@ import { readFiles } from 'src/shared/utils';
 
 const rest = new REST({ version: '9' }).setToken(token);
 
-guildIds.forEach(async (guildId) => {
-  const commands = await loadCommands();
+loadCommands().then((commands) => {
+  guildIds.forEach((guildId) => {
+    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+      .then(() => logger.info(`Successfully registered application commands for guild ${guildId}.`))
+      .catch((err) => logger.error(err));
+  });
 
-  rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-    .then(() => logger.info(`Successfully registered application commands for guild ${guildId}.`))
+  rest.put(Routes.applicationCommands(clientId), { body: commands })
+    .then(() => logger.info('Successfully registered application commands.'))
     .catch((err) => logger.error(err));
 });
 
