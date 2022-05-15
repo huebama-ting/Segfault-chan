@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { REST } from '@discordjs/rest';
+import { REST, RouteLike } from '@discordjs/rest';
+import { RESTGetAPIApplicationCommandResult } from 'discord-api-types/v10';
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord-api-types/v9';
 
 import {
@@ -14,9 +15,21 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 loadCommands().then((commands) => {
   guildIds.forEach((guildId) => {
-    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+    if (process.argv[2] === 'delete') {
+      rest.get(Routes.applicationGuildCommands(clientId, guildId))
+        .then((data) => {
+          for (const command of data as RESTGetAPIApplicationCommandResult[]) {
+            const deleteUrl = `${Routes.applicationGuildCommands(clientId, guildId)}/${command.id}` as RouteLike;
+
+            rest.delete(deleteUrl).then(() => logger.info(`Successfully deleted application command ${command.id} for guild ${guildId}.`));
+          }
+        })
+        .catch((err) => logger.error(err));
+    } else {
+      rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
       .then(() => logger.info(`Successfully registered application commands for guild ${guildId}.`))
       .catch((err) => logger.error(err));
+    }
   });
 
   rest.put(Routes.applicationCommands(clientId), { body: commands })
