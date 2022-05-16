@@ -5,6 +5,7 @@ import { MessageEmbed } from 'discord.js';
 import { apiBaseUrl } from 'src/config/config.json';
 import { Definition } from 'src/models/urban-dictionary/definition.model';
 import { httpService } from 'src/services/http/http.service';
+import { removeCharacters, trim } from 'src/shared/utils';
 import { Command } from './models/command.model';
 
 export const command: Command = {
@@ -38,11 +39,11 @@ export const command: Command = {
         .addFields(
           {
             name: 'Definition',
-            value: result.definition
+            value: removeCharacters(result.definition, '[]')
           },
           {
             name: 'Example',
-            value: result.example
+            value: trim(removeCharacters(result.example, '[]'), 1024)
           }, 
           {
             name: 'Rating',
