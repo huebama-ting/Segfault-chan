@@ -4,6 +4,6 @@ namespace Segfault_chan.API.Services.Interfaces.UrbanDictionary
 {
     public interface IUrbanDictionaryService
     {
-        Task<UrbanDictionaryResponse> GetDefinitions(string term);
+        Task<IEnumerable<UrbanDictionaryDefinition>> GetDefinitions(string term);
     }
 }

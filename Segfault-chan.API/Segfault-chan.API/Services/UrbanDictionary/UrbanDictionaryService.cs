@@ -18,14 +18,16 @@ namespace Segfault_chan.API.Services.UrbanDictionary
             _httpClient = httpClient;
         }
 
-        public async Task<UrbanDictionaryResponse> GetDefinitions(string term)
+        public async Task<IEnumerable<UrbanDictionaryDefinition>> GetDefinitions(string term)
         {
             var query = QueryHelpers.AddQueryString($"{_configuration["UrbanDictionary:BaseUrl"]}/define", "term", term);
             var request = new HttpRequestMessage(HttpMethod.Get, query);
             var response = await _httpClient.SendAsync(request);
             var definitions = await response.Content.ReadAsStringAsync();
+            var a = JsonSerializer.Deserialize<UrbanDictionaryResponse>(definitions);
+            var b = a.Definitions.Select((d) => d);
 
-            return JsonSerializer.Deserialize<UrbanDictionaryResponse>(definitions);
+            return b;
         }
     }
 }
