@@ -4,7 +4,7 @@ namespace Segfault_chan.API.Responses.RandomCat
 {
     public class RandomCatResponse
     {
-        public string File { get; set; }
+        public string Url { get; set; }
     }
 }
 
