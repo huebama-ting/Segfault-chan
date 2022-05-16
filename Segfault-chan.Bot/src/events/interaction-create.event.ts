@@ -1,6 +1,7 @@
 import { Interaction } from 'discord.js';
 
 import { commands } from 'src/commands/commands';
+import { logger } from 'src/logger/logger';
 import { isInteraction } from 'src/shared/type-predicates';
 
 import { Event } from './models/event.model';
@@ -29,6 +30,7 @@ async function handleInteraction(interaction: Interaction) {
   try {
     await command.execute(interaction);
   } catch (err) {
+    logger.error(err);
     await interaction.reply({ content: 'An error occured while executing this command.', ephemeral: true });
   }
 }

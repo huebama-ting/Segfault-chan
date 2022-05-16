@@ -32,9 +32,11 @@ loadCommands().then((commands) => {
     }
   });
 
-  rest.put(Routes.applicationCommands(clientId), { body: commands })
-    .then(() => logger.info('Successfully registered application commands.'))
-    .catch((err) => logger.error(err));
+  if (process.argv[2] === 'global') {
+    rest.put(Routes.applicationCommands(clientId), { body: commands })
+      .then(() => logger.info('Successfully registered application commands.'))
+      .catch((err) => logger.error(err));
+  }
 });
 
 async function loadCommands(): Promise<RESTPostAPIApplicationCommandsJSONBody[]> {
