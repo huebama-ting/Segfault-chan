@@ -31,7 +31,7 @@ export const command: Command = {
     .setName('urban-dictionary')
     .setDescription('Gets definitions of a term from Urban Dictionary.'),
   async execute(interaction): Promise<void> {
-    const term = interaction.options.getString('term') as string;
+    const term = interaction.options.getString('term', true);
     const query = new URLSearchParams({ term });
     const response = await httpService.get<Definition[]>(`${apiBaseUrl}/${URBAN_DICTIONARY_ENDPOINT}?${query}`);
 
