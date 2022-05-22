@@ -1,7 +1,8 @@
 import {
   bold,
   italic,
-  SlashCommandBuilder
+  SlashCommandBuilder,
+  userMention
 } from '@discordjs/builders';
 import dayjs from 'dayjs';
 import {
@@ -35,7 +36,7 @@ export const command: Command = {
     const response = await httpService.get<Definition[]>(`${apiBaseUrl}/${URBAN_DICTIONARY_ENDPOINT}?${query}`);
 
     if (response.length === 0) {
-      return await interaction.reply(`No results found for ${italic(bold(term))}.`);
+      return await interaction.reply(`${userMention(interaction.user.id)}, no results found for ${italic(bold(term))}.`);
     }
     
     let embed = createEmbed(term, response, 0, response.length);
