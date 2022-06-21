@@ -14,7 +14,8 @@ import { logger } from 'src/logger/logger';
 import { Command } from './models/command.model';
 
 enum Clip {
-  MorseCode = 'assets/sound-clips/morse-code.ogg'
+  MorseCode,
+  GarandPing
 }
 
 export const command: Command = {
@@ -22,7 +23,8 @@ export const command: Command = {
     .addStringOption((option) =>
       option.setName('clip')
         .setDescription('The clip to play.')
-        .addChoices({ name: 'Morse code', value: Clip.MorseCode })
+        .addChoices({ name: 'Morse code', value: Clip[Clip.MorseCode] })
+        .addChoices({ name: 'Garand ping', value: Clip[Clip.GarandPing] })
         .setRequired(true))
     .setName('play-clip')
     .setDescription('Plays a sound clip.'),
@@ -41,7 +43,9 @@ export const command: Command = {
     });
     const player = createAudioPlayer();
     const subscription = connection.subscribe(player);
-    const clip = interaction.options.getString('clip', true);
+    const clipName = interaction.options.getString('clip', true);
+    const clipNumber = Clip[clipName as keyof typeof Clip];
+    const clip = `assets/sound-clips/${clipNumber}.ogg`;
     const resource = createAudioResource(clip, {
       inputType: StreamType.OggOpus
     });
@@ -49,11 +53,18 @@ export const command: Command = {
     player.on('error', (err) => {
       logger.error(`Error: ${err.message} on track ${clip}`);
     });
+    player.on(AudioPlayerStatus.Buffering, async () => {
+      await interaction.reply(`Now loading clip: ${clipName}...`);
+    });
 
     player.play(resource);
-
-    player.on(AudioPlayerStatus.Idle, (oldState) => {
+    
+    player.on(AudioPlayerStatus.Playing, async () => {
+      await interaction.editReply(`Now playing clip: ${clipName}...`);
+    });
+    player.on(AudioPlayerStatus.Idle, async (oldState) => {
       if (oldState.status === AudioPlayerStatus.Playing) {
+        await interaction.editReply(`Completed playing clip: ${clipName}.`);
         setTimeout(() => {
           player.stop();
           subscription?.unsubscribe();
@@ -62,7 +73,5 @@ export const command: Command = {
         }, 1000);
       }
     });
-
-    await interaction.reply('something');
   }
 };
